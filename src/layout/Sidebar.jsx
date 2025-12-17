@@ -14,17 +14,17 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
   const path = useLocation();
   const [menu, setMenu] = useState(false);
   const [editLabel, setEditLabel] = useState(false);
-  const { labelDatas, createLabel } = useLabel();
+  const { labelDatas } = useLabel();
 
   const sideMenuOptionMainBox = (itemPath) =>
     `${
       path.pathname === itemPath ? "bg-[#feefc3]" : "hover:bg-gray-200"
-    } h-10 md:h-[50px] transition rounded-4xl flex items-center ${
+    } h-10 mb-2 md:mb-0 md:h-[50px] transition rounded-4xl flex items-center ${
       side
         ? "rounded-s-none w-full mx-0 px-3"
         : menu
         ? "rounded-s-none w-full mx-0 px-3"
-        : "w-10 md:w-[50px] sm:mx-3"
+        : "w-10 md:w-[50px] mx-1 sm:mx-3"
     }`;
 
   const sideMenuOptionIconBox = (itemPath) =>
@@ -48,7 +48,13 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
       <div
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`py-2 bg-white shadow-[1px_2px_3px_rgba(0,0,0,0.3)] ${
+        className={`py-2 bg-white ${
+          side
+            ? "shadow-[1px_2px_3px_rgba(0,0,0,0.3)]"
+            : menu
+            ? "shadow-[1px_2px_3px_rgba(0,0,0,0.3)]"
+            : ""
+        } ${
           side
             ? "fixed top-[67px] left-0 h-[calc(100dvh-67px)] z-20 md:static w-[280px] shadow-[2px_4px_6px_rgba(0,0,0,0.3)]"
             : menu
@@ -90,7 +96,10 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
             </Link>
           ))}
 
-        <div onClick={()=>setEditLabel((pre)=>!pre)} className={sideMenuOptionMainBox("/od")}>
+        <div
+          onClick={() => setEditLabel((pre) => !pre)}
+          className={sideMenuOptionMainBox("/od")}
+        >
           <div className={sideMenuOptionIconBox("/od")}>
             <RiPencilLine className="font-bold text-2xl text-gray-800" />
           </div>
@@ -98,7 +107,9 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
             <p className="text-lg ms-4 whitespace-nowrap">Edit labels</p>
           )}
         </div>
-        {editLabel && <EditLabels editLabel={editLabel} setEditLabel={setEditLabel}/>}
+        {editLabel && (
+          <EditLabels editLabel={editLabel} setEditLabel={setEditLabel} />
+        )}
 
         <div className={sideMenuOptionMainBox("/od")}>
           <div className={sideMenuOptionIconBox("/od")}>

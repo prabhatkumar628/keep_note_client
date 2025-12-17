@@ -45,7 +45,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
       } py-2 border-b border-gray-200 w-full fixed top-0 left-0 z-10`}
     >
       <nav className="flex justify-between items-center">
-        <div className="flex md:gap-2 items-center px-1 md:px-0">
+        <div className="flex md:gap-2 items-center px-2 sm:px-1 md:px-0">
           <div
             onClick={() => setSide((pre) => !pre)}
             className="w-10 md:w-[50px] h-10 md:h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center"

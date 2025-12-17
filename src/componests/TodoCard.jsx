@@ -159,7 +159,7 @@ export const TodoCard = ({ item }) => {
       onMouseLeave={() => setHover(false)}
       key={item._id}
       style={{ backgroundColor: item.color || "#fff" }}
-      className="relative break-inside-avoid  rounded-lg border border-gray-300  p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]"
+      className="relative break-inside-avoid rounded-lg border border-gray-300  p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]"
     >
       <div
         ref={pinnedRef}
@@ -177,13 +177,27 @@ export const TodoCard = ({ item }) => {
         </label>
       </div>
 
-      <div className="font-semibold">{item.title}</div>
-      <div>{item.content}</div>
+      <div className="overflow-hidden">
+        <div className="font-semibold">
+          {item.title?.length > 50
+            ? item.title.slice(0, 50) + "..."
+            : item.title}
+        </div>
+
+        <div>
+          {item.content?.length > 600
+            ? item.content.slice(0, 600) + "..."
+            : item.content}
+        </div>
+      </div>
 
       <div className="flex flex-wrap gap-2 my-1 mb-2">
         {labelsName.length !== 0 &&
           labelsName.map((label) => (
-            <div key={label._id} className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg">
+            <div
+              key={label._id}
+              className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg"
+            >
               <button type="button">{label.name}</button>
               {/* <RxCross2
                 onClick={() => handlePopModelLabelName(label)}
@@ -264,34 +278,39 @@ export const TodoCard = ({ item }) => {
               {pinned ? <RiPushpin2Fill /> : <RiPushpin2Line />}
             </label>
 
-            <textarea
-              ref={titleRef}
-              value={title}
-              onChange={handelTitleFeild}
-              className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none"
-              placeholder="Tital"
-              name=""
-              id=""
-              rows={1}
-            ></textarea>
+            <div className="max-h-[calc(100dvh-100px)] overflow-y-scroll hide-scrollbar">
+              <textarea
+                ref={titleRef}
+                value={title}
+                onChange={handelTitleFeild}
+                className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none"
+                placeholder="Tital"
+                name=""
+                id=""
+                rows={1}
+              ></textarea>
 
-            <textarea
-              ref={contentRef}
-              value={content}
-              className="w-full p-1 resize-none min-h-min text-lg outline-none"
-              onChange={handelContentFeild}
-              rows={1}
-              type="text"
-              placeholder="Take a note..."
-              name=""
-              id=""
-            ></textarea>
+              <textarea
+                ref={contentRef}
+                value={content}
+                className="w-full p-1 resize-none min-h-min text-lg outline-none"
+                onChange={handelContentFeild}
+                rows={1}
+                type="text"
+                placeholder="Take a note..."
+                name=""
+                id=""
+              ></textarea>
+            </div>
 
             <div className="">
               <div className="flex flex-wrap gap-2 my-1 mb-2">
                 {labelsName.length !== 0 &&
                   labelsName.map((label) => (
-                    <div key={label._id} className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg">
+                    <div
+                      key={label._id}
+                      className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg"
+                    >
                       <button type="button">{label.name}</button>
                       <RxCross2
                         onClick={() => handlePopModelLabelName(label)}
