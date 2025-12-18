@@ -178,13 +178,13 @@ export const TodoCard = ({ item }) => {
       </div>
 
       <div className="overflow-hidden">
-        <div className="font-semibold">
+        <div className="font-semibold text-lg dm-500">
           {item.title?.length > 50
             ? item.title.slice(0, 50) + "..."
             : item.title}
         </div>
 
-        <div>
+        <div className="dm-300 ">
           {item.content?.length > 600
             ? item.content.slice(0, 600) + "..."
             : item.content}

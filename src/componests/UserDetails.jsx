@@ -71,7 +71,7 @@ export const UserDetails = ({ setUserDetails }) => {
       {/* Overlay */}
       <div
         onClick={() => setUserDetails(false)}
-        className="fixed inset-0 bg-black/30 z-40"
+        className="fixed inset-0 bg-black/30 z-50"
       />
 
       {/* Container */}

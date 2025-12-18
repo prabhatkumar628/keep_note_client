@@ -7,8 +7,10 @@ import { useAuth } from "../context/AuthContext.js";
 import { useLayout } from "../context/layout_context/LayoutContext.js";
 import { UserDetails } from "../componests/UserDetails.jsx";
 import { MdOutlineViewDay } from "react-icons/md";
+import { TfiSearch } from "react-icons/tfi";
 
 export const Navbar = ({ scrollRef, setSide, side }) => {
+  const [searchBar, setSearchBar] = useState(false);
   const [scroll, setScroll] = useState(false);
   const [userDetails, setUserDetails] = useState(false);
   const { user } = useAuth();
@@ -44,11 +46,11 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
         scroll ? "shadow-[1px_2px_4px_rgba(0,0,0,0.2)]" : ""
       } py-2 border-b border-gray-200 w-full fixed top-0 left-0 z-10`}
     >
-      <nav className="flex justify-between items-center">
-        <div className="flex md:gap-2 items-center px-2 sm:px-1 md:px-0">
+      <nav className="flex justify-between items-center relative">
+        <div className="flex md:gap-2 items-center px-1">
           <div
             onClick={() => setSide((pre) => !pre)}
-            className="w-10 md:w-[50px] h-10 md:h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center"
+            className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center"
           >
             {side ? (
               <RxCross2 className="font-bold text-2xl text-gray-800" />
@@ -58,34 +60,52 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
           </div>
           <div className="flex items-center">
             <img
-              className="w-[50px] max-w-[50px]"
-              src="https://www.gstatic.com/images/branding/product/2x/keep_2020q4_48dp.png"
+              className="w-[43px] max-w-[50px]"
+              src="/public/images/logo/white1.png"
               alt="logo"
             />
-            <p className="font-bold text-xl underline">Keep</p>
+            <p className="font-semibold tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl">
+              Likhooo
+            </p>
           </div>
         </div>
-        <div className="h-12 hidden md:flex bg-gray-200 hover:bg-white hover:shadow rounded flex-1 max-w-2xl justify-between items-center">
-          <div className="px-2">
-            <TbReload className="font-bold text-2xl text-gray-800" />
+
+        <div className="flex gap-0.5 md:gap-2 justify-end items-center px-1 w-full">
+          <div
+            className={`${
+              searchBar ? "flex" : "hidden"
+            } absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 w-[80%] z-50 md:w-[50%] md:flex border border-gray-300 bg-white hover:shadow rounded-full max-w-2xl justify-between items-center`}
+          >
+            <input
+              className={`w-full flex-1 ps-4 outline-none`}
+              placeholder="Search"
+              type="text"
+            />
+            <div className="w-10 h-10 mx-2 transition hover:bg-gray-200 rounded-full grid place-items-center cursor-pointer">
+              <div onClick={() => setSearchBar(false)} className="md:hidden">
+                <RxCross2 className="font-bold text-xl text-gray-800" />
+              </div>
+              <div className="md:block hidden">
+                <TfiSearch className="font-bold text-xl text-gray-800" />
+              </div>
+            </div>
           </div>
-          <input
-            className="w-full flex-1 outline-none"
-            placeholder="Search"
-            type="text"
-          />
-          <div className="px-2">
-            <TbReload className="font-bold text-2xl text-gray-800" />
+
+          <div
+            onClick={() => setSearchBar(true)}
+            className={`${
+              searchBar ? "hidden" : ""
+            } w-[34px] md:hidden h-[34px] sm:w-10 sm:h-10 lg:hidden transition hover:bg-gray-200 rounded-full grid place-items-center`}
+          >
+            <TfiSearch className="font-bold text-xl text-gray-800" />
           </div>
-        </div>
-        <div className="flex gap-0.5 md:gap-2 justify-end items-center px-1">
-          <div className="w-10 md:w-[50px] h-10 md:h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
+          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center">
             <TbReload
               onClick={() => window.location.reload()}
               className="font-bold text-2xl text-gray-800"
             />
           </div>
-          <div className="w-10 md:w-[50px] h-10 md:h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
+          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center">
             {grid ? (
               <MdOutlineGridView
                 onClick={() => setGrid((pre) => !pre)}
@@ -98,11 +118,14 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
               />
             )}
           </div>
-         
-          <div className="w-10 h-10 bg-gray-200 p-0.5 sm:p-1 transition hover:bg-gray-300 rounded-full flex justify-between items-center relative">
+
+          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 bg-gray-200 p-0.5 sm:p-1 transition hover:bg-gray-300 rounded-full flex justify-between items-center relative">
             {user?.avatar ? (
               <img
-                onClick={() => setUserDetails((pre) => !pre)}
+                onClick={() => {
+                  setSide(false);
+                  setUserDetails((pre) => !pre);
+                }}
                 className="w-full h-full object-cover rounded-full"
                 src={`${import.meta.env.VITE_API_BASE_URL}${
                   user.avatar.original
@@ -110,7 +133,13 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
                 alt="avatar"
               />
             ) : (
-              <p onClick={() => setUserDetails((pre) => !pre)} className="text-2xl px-1 md:px-0 md:w-full text-center font-semibold text-gray-800">
+              <p
+                onClick={() => {
+                  setSide(false);
+                  setUserDetails((pre) => !pre);
+                }}
+                className="text-2xl px-1 md:px-0 md:w-full text-center font-semibold text-gray-800"
+              >
                 {user?.username?.slice(0, 1).toUpperCase() ?? "U"}
               </p>
             )}
