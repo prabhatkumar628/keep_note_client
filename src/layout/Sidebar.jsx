@@ -26,7 +26,7 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
     ` 
   ${path.pathname === itemPath && side ? "bg-[#feefc3]" : ""}
   ${path.pathname !== itemPath && side ? "hover:bg-gray-200" : ""}
-  flex items-center px-1 sm:px-4`;
+  flex items-center px-1 py-1 sm:px-4`;
 
   const sideMenuOptionIconBox = (itemPath) =>
     `

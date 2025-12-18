@@ -37,7 +37,6 @@ export const Main = ({ children, scrollRef }) => {
   const { labelId } = useParams();
   const [currentLabel, setCurrentLabel] = useState({});
 
-
   useEffect(() => {
     if (!labelDatas) return;
 
@@ -63,16 +62,13 @@ export const Main = ({ children, scrollRef }) => {
     }
   }, [labelId, labelDatas]);
 
-
-
-
-
-
-
-
   const handalFormSubmit = async (e) => {
     e.preventDefault();
     // title, content, isPinned, labels, color, reminder, isArchived
+    if (!title && !content) {
+      setClick(false);
+      return;
+    }
     await addTodo({
       title,
       content,
@@ -94,6 +90,10 @@ export const Main = ({ children, scrollRef }) => {
   };
 
   const handleOutSideSubmit = async () => {
+    if (!title && !content) {
+      setClick(false);
+      return;
+    }
     await addTodo({
       title,
       content,

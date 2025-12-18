@@ -8,6 +8,7 @@ import { useLayout } from "../context/layout_context/LayoutContext.js";
 import { UserDetails } from "../componests/UserDetails.jsx";
 import { MdOutlineViewDay } from "react-icons/md";
 import { TfiSearch } from "react-icons/tfi";
+import logo from "../../public/images/logo/white1.png"
 
 export const Navbar = ({ scrollRef, setSide, side }) => {
   const [searchBar, setSearchBar] = useState(false);
@@ -61,7 +62,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
           <div className="flex items-center">
             <img
               className="w-[43px] max-w-[50px]"
-              src="/public/images/logo/white1.png"
+              src={logo}
               alt="logo"
             />
             <p className="font-semibold tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl">

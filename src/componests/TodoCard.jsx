@@ -79,7 +79,24 @@ export const TodoCard = ({ item }) => {
   };
 
   const updateAllData = async () => {
+    // console.log(item)
     // title, content, isPinned, labels, color, reminder, isArchived
+    const isSameLabels =
+      JSON.stringify([...labels].sort()) ===
+      JSON.stringify([...item.labels].sort());
+
+    if (
+      title === item.title &&
+      content === item.content &&
+      color === item.color &&
+      pinned === item.isPinned &&
+      isSameLabels &&
+      archive === item.isArchived
+    ) {
+      
+      return setPopModel(false);
+    }
+
     await updateTodo(item._id, {
       title,
       content,
@@ -108,13 +125,6 @@ export const TodoCard = ({ item }) => {
     return () => document.removeEventListener("mousedown", outSideClick);
   });
 
-  useEffect(() => {
-    if (popModel) {
-      // console.log();
-      console.log(archive);
-    }
-  }, [item, popModel, archive]);
-
   const colorRef = useRef();
   const archiveRef = useRef();
   const threeDotRef = useRef();
@@ -131,7 +141,6 @@ export const TodoCard = ({ item }) => {
     setPopModel(true);
   };
 
-  //expand title and content textarea height on popModel Active
   useEffect(() => {
     if (popModel) {
       if (titleRef.current) {
@@ -146,12 +155,6 @@ export const TodoCard = ({ item }) => {
       }
     }
   }, [popModel]);
-
-  // useEffect(() => {
-  //   setLabels(() => (item?.labels ? item.labels.map((l) => l._id) : []));
-  //   console.log("printing")
-  // }, []);
-
   return (
     <div
       onClick={handlePopModelOpen}
@@ -223,7 +226,6 @@ export const TodoCard = ({ item }) => {
           <div ref={archiveRef} className="">
             <input
               type="checkbox"
-              // onChange={() => setArchive((pre) => !pre)}
               className="hidden"
               id="archive"
               value={archive}
@@ -433,7 +435,7 @@ export const TodoCard = ({ item }) => {
                 </div>
                 <button
                   onClick={updateAllData}
-                  className="font-semibold px-4 "
+                  className="font-semibold px-4 cursor-pointer"
                   type="button"
                 >
                   close
