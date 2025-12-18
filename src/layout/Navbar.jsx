@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LiaBarsSolid } from "react-icons/lia";
+import { HiMiniBars3 } from "react-icons/hi2";
 import { MdOutlineGridView } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
@@ -8,6 +9,7 @@ import { useLayout } from "../context/layout_context/LayoutContext.js";
 import { UserDetails } from "../componests/UserDetails.jsx";
 import { MdOutlineViewDay } from "react-icons/md";
 import { TfiSearch } from "react-icons/tfi";
+import { AiOutlineSearch } from "react-icons/ai";
 import logo from "../../public/images/logo/white1.png"
 
 export const Navbar = ({ scrollRef, setSide, side }) => {
@@ -54,9 +56,9 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
             className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center"
           >
             {side ? (
-              <RxCross2 className="font-bold text-2xl text-gray-800" />
+              <RxCross2 className="font-bold text-3xl text-gray-800" />
             ) : (
-              <LiaBarsSolid className="font-bold text-2xl text-gray-800" />
+              <HiMiniBars3 className="font-bold text-3xl text-gray-800" />
             )}
           </div>
           <div className="flex items-center">
@@ -98,29 +100,29 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
               searchBar ? "hidden" : ""
             } md:hidden w-[50px] h-[50px] lg:hidden transition hover:bg-gray-200 rounded-full grid place-items-center`}
           >
-            <TfiSearch className="font-bold text-xl text-gray-800" />
+            <AiOutlineSearch className="font-bold text-3xl text-gray-800" />
           </div>
           <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
             <TbReload
               onClick={() => window.location.reload()}
-              className="font-bold text-2xl text-gray-800"
+              className="font-bold text-3xl text-gray-800"
             />
           </div>
           <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
             {grid ? (
               <MdOutlineGridView
                 onClick={() => setGrid((pre) => !pre)}
-                className="font-bold text-2xl text-gray-800"
+                className="font-bold text-3xl text-gray-800"
               />
             ) : (
               <MdOutlineViewDay
                 onClick={() => setGrid((pre) => !pre)}
-                className="font-bold text-2xl text-gray-800"
+                className="font-bold text-3xl text-gray-800"
               />
             )}
           </div>
 
-          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 bg-gray-200 p-0.5 sm:p-1 transition hover:bg-gray-300 rounded-full flex justify-between items-center relative">
+          <div className="w-[50px] h-[50px] bg-gray-200 p-0.5 sm:p-1 transition hover:bg-gray-300 rounded-full flex justify-between items-center relative">
             {user?.avatar ? (
               <img
                 onClick={() => {
