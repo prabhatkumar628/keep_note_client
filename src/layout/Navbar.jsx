@@ -51,7 +51,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
         <div className="flex md:gap-2 items-center px-1">
           <div
             onClick={() => setSide((pre) => !pre)}
-            className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center"
+            className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center"
           >
             {side ? (
               <RxCross2 className="font-bold text-2xl text-gray-800" />
@@ -65,7 +65,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
               src={logo}
               alt="logo"
             />
-            <p className="font-semibold tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl">
+            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl">
               Likhooo
             </p>
           </div>
@@ -96,17 +96,17 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
             onClick={() => setSearchBar(true)}
             className={`${
               searchBar ? "hidden" : ""
-            } w-[34px] md:hidden h-[34px] sm:w-10 sm:h-10 lg:hidden transition hover:bg-gray-200 rounded-full grid place-items-center`}
+            } md:hidden w-[50px] h-[50px] lg:hidden transition hover:bg-gray-200 rounded-full grid place-items-center`}
           >
             <TfiSearch className="font-bold text-xl text-gray-800" />
           </div>
-          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center">
+          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
             <TbReload
               onClick={() => window.location.reload()}
               className="font-bold text-2xl text-gray-800"
             />
           </div>
-          <div className="w-[34px] h-[34px] sm:w-10 sm:h-10 transition hover:bg-gray-200 rounded-full grid place-items-center">
+          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
             {grid ? (
               <MdOutlineGridView
                 onClick={() => setGrid((pre) => !pre)}

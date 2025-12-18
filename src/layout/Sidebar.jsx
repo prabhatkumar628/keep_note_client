@@ -26,13 +26,13 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
     ` 
   ${path.pathname === itemPath && side ? "bg-[#feefc3]" : ""}
   ${path.pathname !== itemPath && side ? "hover:bg-gray-200" : ""}
-  flex items-center px-1 py-1 sm:px-4`;
+  flex items-center px-1 sm:px-4`;
 
   const sideMenuOptionIconBox = (itemPath) =>
     `
   ${path.pathname === itemPath && !side ? "bg-[#feefc3]" : ""}
   ${path.pathname !== itemPath && !side ? "hover:bg-gray-200" : ""}
-  w-[34px] min-w-[34px] h-[34px] sm:w-10 sm:min-w-10 sm:h-10 grid place-items-center rounded-full`;
+  w-[50px] min-w-[50px] h-[50px] grid place-items-center rounded-full`;
 
   // Check if screen >= 1024px (lg)
   // const isLargeScreen = window.matchMedia("(min-width: 1024px)").matches;
@@ -50,12 +50,12 @@ export const Sidebar = ({ scrollRef, side, grid, chid }) => {
       <div
         className={`py-2 w-[250px] min-w-[250px] transition-all duration-300 ease-in-out z-20 md:z-auto absolute 
    bg-white h-[calc(100dvh-67px)] border-r border-gray-300
-   md:static md:w-[70px] md:min-w-[70px] md:!ms-0
+   md:static md:w-[84px] md:min-w-[84px] md:!ms-0
    ${side ? "ms-0 shadow-[1px_2px_6px_rgba(0,0,0,0.2)]" : "ms-[-250px]"}
-   ${side ? "md:w-[250px] shadow-[1px_2px_6px_rgba(0,0,0,0.2)]" : "md:w-[70px]"}
+   ${side ? "md:w-[250px] shadow-[1px_2px_6px_rgba(0,0,0,0.2)]" : "md:w-[84px]"}
         `}
       >
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <Link to={"/"} className="">
             <div className={sideMenuOptionMainBox("/")}>
               <div className={sideMenuOptionIconBox("/")}>

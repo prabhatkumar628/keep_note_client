@@ -79,22 +79,24 @@ export const TodoCard = ({ item }) => {
   };
 
   const updateAllData = async () => {
-    // console.log(item)
+    console.log(item);
     // title, content, isPinned, labels, color, reminder, isArchived
+    const itemLabelIds = item.labels.map((l) => l._id);
+
     const isSameLabels =
       JSON.stringify([...labels].sort()) ===
-      JSON.stringify([...item.labels].sort());
+      JSON.stringify([...itemLabelIds].sort());
 
-    if (
-      title === item.title &&
-      content === item.content &&
+    const isSame =
+      title.trim() === item.title &&
+      content.trim() === item.content &&
       color === item.color &&
       pinned === item.isPinned &&
       isSameLabels &&
-      archive === item.isArchived
-    ) {
-      
-      return setPopModel(false);
+      archive === item.isArchived;
+
+    if (isSame) {
+      return false; // ❗ no update
     }
 
     await updateTodo(item._id, {
@@ -105,6 +107,11 @@ export const TodoCard = ({ item }) => {
       labels,
       isArchived: archive,
     });
+    return true; // updated
+  };
+
+  const handleCloseClick = async () => {
+    await updateAllData();
     setPopModel(false);
     setFormMenu(false);
     setLabelOptions(false);
@@ -112,12 +119,15 @@ export const TodoCard = ({ item }) => {
   };
 
   useEffect(() => {
-    const outSideClick = (e) => {
+    const outSideClick = async (e) => {
       if (popRef.current && !popRef.current.contains(e.target)) {
         setPopModel(false);
         if (title.trim() !== "" || content.trim() !== "") {
-          updateAllData();
+          await updateAllData();
         }
+        setFormMenu(false);
+        setLabelOptions(false);
+        setHover(false);
       }
     };
     document.addEventListener("mousedown", outSideClick);
@@ -273,10 +283,10 @@ export const TodoCard = ({ item }) => {
               type="checkbox"
               onChange={() => setPinned((pre) => !pre)}
               className="hidden"
-              id="pinned"
+              id="pinned2"
               value={pinned}
             />
-            <label htmlFor="pinned" className="text-xl absolute right-3 top-3">
+            <label htmlFor="pinned2" className="text-xl absolute right-3 top-3">
               {pinned ? <RiPushpin2Fill /> : <RiPushpin2Line />}
             </label>
 
@@ -434,7 +444,7 @@ export const TodoCard = ({ item }) => {
                   </div>
                 </div>
                 <button
-                  onClick={updateAllData}
+                  onClick={handleCloseClick}
                   className="font-semibold px-4 cursor-pointer"
                   type="button"
                 >
