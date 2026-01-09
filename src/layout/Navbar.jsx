@@ -33,14 +33,15 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
     return () => div.removeEventListener("scroll", handleScroll);
   });
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 640px)").matches;
-    const handleChange = () => {
-      if (mediaQuery) setGrid(false);
-      else setGrid(true);
-    };
-    handleChange();
-  }, [setGrid]);
+  //// this grid system according to small devices
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia("(min-width: 640px)").matches;
+  //   const handleChange = () => {
+  //     if (mediaQuery) setGrid(false);
+  //     else setGrid(true);
+  //   };
+  //   handleChange();
+  // }, [setGrid]);
 
   return (
     <header
@@ -54,7 +55,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
         <div className="flex md:gap-2 items-center px-1">
           <div
             onClick={() => setSide((pre) => !pre)}
-            className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center"
+            className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
           >
             {side ? (
               <RxCross2 className="text-3xl text-gray-800 dark:text-gray-200" />
@@ -65,7 +66,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
 
           <div className="flex items-center gap-1 ms-2">
             <img className="w-[43px]" src={logo} alt="logo" />
-            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal text-xl sm:text-2xl text-gray-900 dark:text-white">
+            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal text-xl sm:text-2xl text-gray-900 dark:text-white cursor-default">
               Likhooo
             </p>
           </div>
@@ -75,35 +76,42 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
         <div className="flex gap-0.5 md:gap-2 justify-end items-center px-1 w-full">
           {/* Search Bar */}
           <div
-            className={`${searchBar ? "flex" : "hidden"}
-             absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 w-[80%] md:w-[50%] 
-             border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#141517]
-             hover:shadow rounded-full justify-between items-center transition max-w-2xl z-50`}
+            className={` ${searchBar ? "flex" : "hidden"}
+            absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 w-[80%] z-50
+            md:w-[50%] md:flex border border-gray-300 dark:border-gray-600 bg-white
+            dark:bg-[#141517] hover:shadow rounded-full max-w-2xl  justify-between items-center`}
           >
             <input
-              className="w-full flex-1 ps-4 outline-none bg-transparent text-gray-900 dark:text-gray-200 placeholder-gray-400"
+              className="w-full flex-1 ps-4 outline-none
+               bg-transparent
+               text-gray-800 dark:text-gray-200
+               placeholder:text-gray-400 dark:placeholder:text-gray-400"
               placeholder="Search"
               type="text"
             />
 
-            <div className="w-10 h-10 mx-2 transition hover:bg-gray-200 dark:hover:bg-[#1f1f1f] rounded-full grid place-items-center cursor-pointer">
+            <div
+              className="w-10 h-10 mx-2 transition
+               hover:bg-gray-200 dark:hover:bg-[#1a1a1a]
+               rounded-full grid place-items-center cursor-pointer"
+            >
               <div onClick={() => setSearchBar(false)} className="md:hidden">
-                <RxCross2 className="text-xl text-gray-800 dark:text-gray-200" />
+                <RxCross2 className="font-bold text-xl text-gray-800 dark:text-gray-200" />
               </div>
+
               <div className="md:block hidden">
-                <TfiSearch className="text-xl text-gray-800 dark:text-gray-200" />
+                <TfiSearch className="font-bold text-xl text-gray-800 dark:text-gray-200" />
               </div>
             </div>
           </div>
 
-          {/* Mobile Search Icon */}
           <div
             onClick={() => setSearchBar(true)}
-            className={`${searchBar ? "hidden" : ""} 
-            md:hidden w-[50px] h-[50px] hover:bg-gray-200 dark:hover:bg-[#1a1a1a]
-            transition rounded-full grid place-items-center`}
+            className={`${searchBar ? "hidden" : ""}
+            md:hidden w-[50px] h-[50px] lg:hidden transition hover:bg-gray-200
+            dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer`}
           >
-            <AiOutlineSearch className="text-3xl text-gray-800 dark:text-gray-200" />
+            <AiOutlineSearch className="font-bold text-3xl text-gray-800 dark:text-gray-200" />
           </div>
 
           {/* Reload */}

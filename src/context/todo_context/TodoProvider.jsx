@@ -64,7 +64,7 @@ export const TodoProvider = ({ children }) => {
       setLoading(true);
       setErrorData(null);
       await todoApi.deleteTodo(id);
-      setTodo((prev) => prev.filter((item) => item.id !== id));
+      setTodo((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       setErrorData(err);
     } finally {
