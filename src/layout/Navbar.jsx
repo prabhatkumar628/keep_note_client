@@ -10,7 +10,7 @@ import { UserDetails } from "../componests/UserDetails.jsx";
 import { MdOutlineViewDay } from "react-icons/md";
 import { TfiSearch } from "react-icons/tfi";
 import { AiOutlineSearch } from "react-icons/ai";
-import logo from "../../public/images/logo/white1.png"
+import logo from "../../public/images/logo/white1.png";
 
 export const Navbar = ({ scrollRef, setSide, side }) => {
   const [searchBar, setSearchBar] = useState(false);
@@ -30,7 +30,6 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
     };
 
     div.addEventListener("scroll", handleScroll);
-
     return () => div.removeEventListener("scroll", handleScroll);
   });
 
@@ -45,84 +44,94 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
 
   return (
     <header
-      className={`sm:px-3 ${
-        scroll ? "shadow-[1px_2px_4px_rgba(0,0,0,0.2)]" : ""
-      } py-2 border-b border-gray-200 w-full fixed top-0 left-0 z-10`}
+      className={`
+      ${scroll ? "shadow-[1px_2px_4px_rgba(0,0,0,0.2)]" : ""}
+      sm:px-3 py-2 border-b border-gray-200 dark:border-gray-700 bg-white
+       dark:bg-[#0e0e0e] w-full fixed top-0 left-0 z-10 transition-colors`}
     >
       <nav className="flex justify-between items-center relative">
+        {/* Left */}
         <div className="flex md:gap-2 items-center px-1">
           <div
             onClick={() => setSide((pre) => !pre)}
-            className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center"
+            className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center"
           >
             {side ? (
-              <RxCross2 className="font-bold text-3xl text-gray-800" />
+              <RxCross2 className="text-3xl text-gray-800 dark:text-gray-200" />
             ) : (
-              <HiMiniBars3 className="font-bold text-3xl text-gray-800" />
+              <HiMiniBars3 className="text-3xl text-gray-800 dark:text-gray-200" />
             )}
           </div>
-          <div className="flex items-center">
-            <img
-              className="w-[43px] max-w-[50px]"
-              src={logo}
-              alt="logo"
-            />
-            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl">
+
+          <div className="flex items-center gap-1 ms-2">
+            <img className="w-[43px]" src={logo} alt="logo" />
+            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal text-xl sm:text-2xl text-gray-900 dark:text-white">
               Likhooo
             </p>
           </div>
         </div>
 
+        {/* Right */}
         <div className="flex gap-0.5 md:gap-2 justify-end items-center px-1 w-full">
+          {/* Search Bar */}
           <div
-            className={`${
-              searchBar ? "flex" : "hidden"
-            } absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 w-[80%] z-50 md:w-[50%] md:flex border border-gray-300 bg-white hover:shadow rounded-full max-w-2xl justify-between items-center`}
+            className={`${searchBar ? "flex" : "hidden"}
+             absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 h-12 w-[80%] md:w-[50%] 
+             border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#141517]
+             hover:shadow rounded-full justify-between items-center transition max-w-2xl z-50`}
           >
             <input
-              className={`w-full flex-1 ps-4 outline-none`}
+              className="w-full flex-1 ps-4 outline-none bg-transparent text-gray-900 dark:text-gray-200 placeholder-gray-400"
               placeholder="Search"
               type="text"
             />
-            <div className="w-10 h-10 mx-2 transition hover:bg-gray-200 rounded-full grid place-items-center cursor-pointer">
+
+            <div className="w-10 h-10 mx-2 transition hover:bg-gray-200 dark:hover:bg-[#1f1f1f] rounded-full grid place-items-center cursor-pointer">
               <div onClick={() => setSearchBar(false)} className="md:hidden">
-                <RxCross2 className="font-bold text-xl text-gray-800" />
+                <RxCross2 className="text-xl text-gray-800 dark:text-gray-200" />
               </div>
               <div className="md:block hidden">
-                <TfiSearch className="font-bold text-xl text-gray-800" />
+                <TfiSearch className="text-xl text-gray-800 dark:text-gray-200" />
               </div>
             </div>
           </div>
 
+          {/* Mobile Search Icon */}
           <div
             onClick={() => setSearchBar(true)}
-            className={`${
-              searchBar ? "hidden" : ""
-            } md:hidden w-[50px] h-[50px] lg:hidden transition hover:bg-gray-200 rounded-full grid place-items-center`}
+            className={`${searchBar ? "hidden" : ""} 
+            md:hidden w-[50px] h-[50px] hover:bg-gray-200 dark:hover:bg-[#1a1a1a]
+            transition rounded-full grid place-items-center`}
           >
-            <AiOutlineSearch className="font-bold text-3xl text-gray-800" />
+            <AiOutlineSearch className="text-3xl text-gray-800 dark:text-gray-200" />
           </div>
-          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
-            <TbReload
-              onClick={() => window.location.reload()}
-              className="font-bold text-3xl text-gray-800"
-            />
+
+          {/* Reload */}
+          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center">
+            <TbReload onClick={() => window.location.reload()} className="text-3xl text-gray-800 dark:text-gray-200" />
           </div>
-          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 rounded-full grid place-items-center">
+
+          {/* Grid Toggle */}
+          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center">
             {grid ? (
               <MdOutlineGridView
                 onClick={() => setGrid((pre) => !pre)}
-                className="font-bold text-3xl text-gray-800"
+                className="text-3xl text-gray-800 dark:text-gray-200"
               />
             ) : (
               <MdOutlineViewDay
                 onClick={() => setGrid((pre) => !pre)}
-                className="font-bold text-3xl text-gray-800"
+                className="text-3xl text-gray-800 dark:text-gray-200"
               />
             )}
           </div>
 
-          <div className="w-[50px] h-[50px] bg-gray-200 p-0.5 sm:p-1 transition hover:bg-gray-300 rounded-full flex justify-between items-center relative">
+          {/* User Avatar */}
+          <div
+            className="w-[50px] h-[50px] bg-gray-200 dark:bg-[#1a1a1a]
+          p-0.5 sm:p-1 transition hover:bg-gray-300 dark:hover:bg-[#242424]
+          rounded-full flex justify-between items-center relative"
+          >
             {user?.avatar ? (
               <img
                 onClick={() => {
@@ -130,9 +139,7 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
                   setUserDetails((pre) => !pre);
                 }}
                 className="w-full h-full object-cover rounded-full"
-                src={`${import.meta.env.VITE_API_BASE_URL}${
-                  user.avatar.original
-                }`}
+                src={`${import.meta.env.VITE_API_BASE_URL}${user.avatar.original}`}
                 alt="avatar"
               />
             ) : (
@@ -141,11 +148,12 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
                   setSide(false);
                   setUserDetails((pre) => !pre);
                 }}
-                className="text-2xl px-1 md:px-0 md:w-full text-center font-semibold text-gray-800"
+                className="text-2xl text-center font-semibold text-gray-800 dark:text-gray-200 w-full"
               >
                 {user?.username?.slice(0, 1).toUpperCase() ?? "U"}
               </p>
             )}
+
             {userDetails && <UserDetails setUserDetails={setUserDetails} />}
           </div>
         </div>

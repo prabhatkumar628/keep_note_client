@@ -82,7 +82,7 @@ export const Main = ({ children, scrollRef }) => {
 
     setTitle("");
     setContent("");
-    setColor("#fff");
+    setColor("#FFFFFF");
     setPin(false);
     setLabels([]);
     setArchive(false);
@@ -159,88 +159,103 @@ export const Main = ({ children, scrollRef }) => {
   });
 
   return (
-    <div ref={scrollRef} className="px-3 py-2 flex-1 overflow-y-auto">
+    <div ref={scrollRef} className="px-3 py-2 flex-1 overflow-y-auto bg-white dark:bg-[#0e0e0e] transition-colors">
       {loading && <Loading title="loading" subtitle="plese wait" />}
+
       <div className="w-full">
         <form onSubmit={handalFormSubmit}>
           <div
             ref={inputFildBox}
             onClick={() => setClick(true)}
-            className={`flex flex-col w-full mx-auto my-3 max-w-[600px] p-3 rounded-lg relative border border-gray-300`}
-            style={{
-              backgroundColor: color,
-              boxShadow:
-                "rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em",
-            }}
+            className="flex flex-col w-full mx-auto my-3 max-w-[600px] p-3 rounded-lg relative !bg-white dark:!bg-[#10141e] border border-gray-300 dark:border-gray-600 transition-colors"
+            style={{ boxShadow: "rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em" }}
           >
+            {/* Title + Pin */}
             <div className={click ? "block" : "hidden"}>
-              <div className="absolute top-3 right-3">
-                <input
-                  type="checkbox"
-                  onChange={() => setPin((pre) => !pre)}
-                  className="hidden"
-                  id="pin"
-                  value={pin}
-                />
-                <label htmlFor="pin" className="text-2xl">
-                  {pin ? <RiPushpin2Fill /> : <RiPushpin2Line />}
+              <div className="absolute top-3 right-3 text-gray-700 dark:text-gray-200">
+                <input type="checkbox" onChange={() => setPin((pre) => !pre)} className="hidden" id="pin" value={pin} />
+                <label htmlFor="pin" className="text-2xl cursor-pointer">
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+                    {pin ? (
+                      <RiPushpin2Fill className="text-gray-700 text-lg" />
+                    ) : (
+                      <RiPushpin2Line className="text-gray-700 text-lg" />
+                    )}
+                  </div>
                 </label>
               </div>
+
               <textarea
                 ref={titleRef}
                 value={title}
                 onChange={handelTitleFeild}
-                className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none"
                 placeholder="Tital"
-                name=""
-                id=""
                 rows={1}
-              ></textarea>
+                className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              />
             </div>
+
+            {/* Content */}
             <div>
               <textarea
                 ref={contentRef}
                 value={content}
-                className="w-full p-1 resize-none min-h-min text-lg outline-none"
+                className="w-full p-1 resize-none min-h-min text-lg outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 onChange={handelContentFeild}
                 rows={1}
                 type="text"
                 placeholder="Take a note..."
-                name=""
-                id=""
-              ></textarea>
+              />
             </div>
-            <div className={` ${click ? "block" : "hidden"}`}>
+
+            {/* Bottom Controls */}
+            <div className={click ? "block" : "hidden"}>
+              {/* Labels */}
               <div className="flex flex-wrap gap-2 my-1 mb-2">
                 {labelsName.length !== 0 &&
                   labelsName.map((label, index) => (
                     <div
                       key={index}
-                      className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg"
+                      className="inline-flex gap-1 items-center justify-center
+                  bg-gray-300 dark:bg-[#2a2a2a]
+                  text-xs font-semibold px-2 py-1.5
+                  text-gray-800 dark:text-gray-200 rounded-lg"
                     >
                       <button type="button">{label.name}</button>
                       <RxCross2
                         onClick={() => handleRemoveSelectedLabel(label)}
-                        className="border border-gray-300 text-base rounded-md cursor-pointer"
+                        className="border border-gray-400 dark:border-gray-600
+                    text-base rounded-md cursor-pointer"
                       />
                     </div>
                   ))}
               </div>
-              <div className="flex justify-between">
-                <div className="flex gap-6">
-                  <div className="relative">
+
+              {/* Actions */}
+              <div className="flex justify-between items-center">
+                <div className="flex gap-2 md:gap-4 text-gray-700 dark:text-gray-200">
+                  {/* Color */}
+                  <div className="relative w-8 h-8">
                     <input
                       type="color"
                       onChange={(e) => setColor(e.target.value)}
-                      className="absolute top-0 right-0 opacity-0"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
                       id="color"
                       value={color}
                     />
-                    <label htmlFor="color" className="text-xl">
-                      <IoColorPaletteOutline />
+
+                    <label htmlFor="color" className="cursor-pointer">
+                      <div
+                        style={{ backgroundColor: color === "#FFFFFF" ? "#e5e7eb" : color }}
+                        className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                      >
+                        <IoColorPaletteOutline className="text-gray-700 text-xl" />
+                      </div>
                     </label>
                   </div>
-                  <div className="">
+
+                  {/* Archive */}
+                  <div>
                     <input
                       type="checkbox"
                       onChange={() => setArchive((pre) => !pre)}
@@ -248,26 +263,44 @@ export const Main = ({ children, scrollRef }) => {
                       id="archive"
                       value={archive}
                     />
-                    <label htmlFor="archive" className="text-xl">
-                      {archive ? <MdArchive /> : <MdOutlineArchive />}
+                    <label htmlFor="archive" className="text-xl cursor-pointer">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+                        {archive ? (
+                          <MdArchive className="text-gray-700 text-xl" />
+                        ) : (
+                          <MdOutlineArchive className="text-gray-700 text-xl" />
+                        )}
+                      </div>
                     </label>
                   </div>
 
+                  {/* Menu */}
                   <div className="relative">
-                    <span className="text-lg">
-                      <HiDotsVertical
-                        onClick={() => setFormMenu((pre) => !pre)}
-                      />
-                    </span>
+                    <div
+                      onClick={() => setFormMenu((pre) => !pre)}
+                      className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                    >
+                      <HiDotsVertical className="text-gray-700 text-lg" />
+                    </div>
+
+                    {/* Menu */}
                     {formMenu && (
-                      <div className="absolute top-full left-0 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-32 min-h-40 rounded-md overflow-hidden">
-                        <ul className="flex gap-2 ">
+                      <div
+                        className="absolute top-full left-0
+                  bg-white dark:bg-[#141517]
+                  text-gray-900 dark:text-gray-200
+                  shadow-[0_3px_8px_rgba(0,0,0,0.24)]
+                  z-10 w-32 rounded-md overflow-hidden"
+                      >
+                        <ul>
                           <li
                             onClick={() => {
                               setFormMenu((pre) => !pre);
                               setLabelOptions((pre) => !pre);
                             }}
-                            className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
+                            className="text-sm font-semibold
+                        hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
+                        py-1.5 ps-3 transition cursor-pointer"
                           >
                             Add Label
                           </li>
@@ -275,11 +308,18 @@ export const Main = ({ children, scrollRef }) => {
                       </div>
                     )}
 
+                    {/* Label Options */}
                     {labelOptions && (
-                      <div className="absolute top-full left-0 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-52 min-h-40 rounded-md overflow-hidden">
-                        <ul className="flex flex-col gap-2 ">
-                          <li className="flex gap-2 justify-between items-center text-sm font-semibold py-1.5 ps-3 pe-1.5 transition w-full cursor-default">
-                            <span> Label Note</span>
+                      <div
+                        className="absolute top-full left-0
+                  bg-white dark:bg-[#141517]
+                  text-gray-900 dark:text-gray-200
+                  shadow-[0_3px_8px_rgba(0,0,0,0.24)]
+                  z-10 w-52 rounded-md overflow-hidden"
+                      >
+                        <ul className="flex flex-col gap-2">
+                          <li className="flex justify-between items-center text-sm font-semibold py-1.5 ps-3 pe-1.5">
+                            <span>Label Note</span>
                             <RxCross2
                               onClick={() => {
                                 setFormMenu(false);
@@ -288,40 +328,46 @@ export const Main = ({ children, scrollRef }) => {
                               className="text-2xl cursor-pointer"
                             />
                           </li>
-                          <li className="flex text-sm font-semibold py-1 ps-3 transition w-full cursor-pointer">
+
+                          <li className="px-3">
                             <input
                               name="label"
                               value={labelValue}
                               onChange={(e) => setLabelValue(e.target.value)}
-                              className="text-gray-900 outline-none"
+                              className="w-full bg-transparent outline-none
+                          text-gray-900 dark:text-gray-200
+                          placeholder-gray-500"
                               type="text"
                               placeholder="Enter label name"
                             />
                           </li>
 
                           {labelDatas.map((item) => (
-                            <li key={item._id} className="flex">
+                            <li key={item._id}>
                               <label
                                 htmlFor={item._id}
-                                className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
+                                className="flex gap-2 items-center text-sm font-semibold
+                            hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
+                            py-1.5 ps-3 transition cursor-pointer"
                               >
                                 <input
                                   id={item._id}
                                   type="checkbox"
-                                  className="checked:rounded-none scale-110"
+                                  className="scale-110"
                                   checked={labels.includes(item._id)}
-                                  onChange={(e) =>
-                                    handleLabelSelect(item, e.target.checked)
-                                  }
+                                  onChange={(e) => handleLabelSelect(item, e.target.checked)}
                                 />
                                 {item.name}
                               </label>
                             </li>
                           ))}
+
                           {labelValue && (
                             <li
                               onClick={handleLabelCreateBtn}
-                              className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
+                              className="flex gap-1 text-sm font-semibold
+                          hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
+                          py-1.5 ps-3 transition cursor-pointer"
                             >
                               <span>+</span>
                               <span>{labelValue}</span>
@@ -332,7 +378,12 @@ export const Main = ({ children, scrollRef }) => {
                     )}
                   </div>
                 </div>
-                <button className="font-semibold px-4 " type="submit">
+
+                {/* Close */}
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-gray-300 text-sm font-medium cursor-pointer leading-none"
+                >
                   close
                 </button>
               </div>
@@ -340,6 +391,7 @@ export const Main = ({ children, scrollRef }) => {
           </div>
         </form>
       </div>
+
       <div>{children}</div>
     </div>
   );

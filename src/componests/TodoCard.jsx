@@ -167,294 +167,163 @@ export const TodoCard = ({ item }) => {
   }, [popModel]);
   return (
     <div
-      onClick={handlePopModelOpen}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      key={item._id}
-      style={{ backgroundColor: item.color || "#fff" }}
-      className="relative break-inside-avoid rounded-lg border border-gray-300  p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]"
-    >
-      <div
-        ref={pinnedRef}
-        className={`absolute top-3 right-3 ${hover ? "visible" : "invisible"}`}
-      >
+  onClick={handlePopModelOpen}
+  onMouseEnter={() => setHover(true)}
+  onMouseLeave={() => setHover(false)}
+  key={item._id}
+  style={{ backgroundColor: item.color || "#fff" }}
+  className="relative break-inside-avoid rounded-lg border border-gray-300 dark:border-gray-700 p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)] dark:shadow-[0_3px_8px_rgba(255,255,255,0.05)]"
+>
+  {/* Pin Icon */}
+  <div
+    ref={pinnedRef}
+    className={`absolute top-3 right-3 ${hover ? "visible" : "invisible"}`}
+  >
+    <input
+      type="checkbox"
+      onChange={() => setPinned((pre) => !pre)}
+      className="hidden"
+      id="pinned"
+      value={pinned}
+    />
+    <label onClick={handlePin} htmlFor="pinned" className="text-xl cursor-pointer">
+      {pinned ? <RiPushpin2Fill className="text-gray-700 dark:text-gray-800" /> : <RiPushpin2Line className="text-gray-700 dark:text-gray-800" />}
+    </label>
+  </div>
+
+  {/* Title & Content */}
+  <div className="overflow-hidden">
+    <div className="font-semibold text-lg text-gray-800 dark:text-gray-700">
+      {item.title?.length > 50 ? item.title.slice(0, 50) + "..." : item.title}
+    </div>
+    <div className="text-gray-600 dark:text-gray-400">
+      {item.content?.length > 600 ? item.content.slice(0, 600) + "..." : item.content}
+    </div>
+  </div>
+
+  {/* Labels */}
+  <div className="flex flex-wrap gap-2 my-1 mb-2">
+    {labelsName.length !== 0 &&
+      labelsName.map((label) => (
+        <div
+          key={label._id}
+          className="inline-flex gap-1 items-center justify-center bg-gray-300 dark:bg-gray-700 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-800 dark:text-gray-700 rounded-lg"
+        >
+          <button type="button">{label.name}</button>
+        </div>
+      ))}
+  </div>
+
+  {/* Actions on Hover */}
+  <div className={`${hover ? "visible" : "invisible"}`}>
+    <div className="flex gap-6">
+      {/* Color Picker */}
+      <div ref={colorRef} className="relative">
         <input
-          type="checkbox"
-          onChange={() => setPinned((pre) => !pre)}
-          className="hidden"
-          id="pinned"
-          value={pinned}
+          type="color"
+          onChange={(e) => setColor(e.target.value)}
+          className="absolute bottom-0 left-0 opacity-0"
+          id="color"
+          value={color}
         />
-        <label onClick={handlePin} htmlFor="pinned" className="text-xl">
-          {pinned ? <RiPushpin2Fill /> : <RiPushpin2Line />}
+        <label htmlFor="color" className="text-xl cursor-pointer">
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: color === "#FFFFFF" ? "#e5e7eb" : color }}
+          >
+            <IoColorPaletteOutline className="text-gray-700 dark:text-gray-800" />
+          </div>
         </label>
       </div>
 
-      <div className="overflow-hidden">
-        <div className="font-semibold text-lg dm-500">
-          {item.title?.length > 50
-            ? item.title.slice(0, 50) + "..."
-            : item.title}
-        </div>
-
-        <div className="dm-300 ">
-          {item.content?.length > 600
-            ? item.content.slice(0, 600) + "..."
-            : item.content}
-        </div>
+      {/* Archive */}
+      <div ref={archiveRef}>
+        <input type="checkbox" className="hidden" id="archive" value={archive} />
+        <label
+          onClick={() => setArchive((pre) => !pre)}
+          className="text-xl cursor-pointer"
+        >
+          {archive ? (
+            <MdArchive className="text-gray-700 dark:text-gray-800" />
+          ) : (
+            <MdOutlineArchive className="text-gray-700 dark:text-gray-800" />
+          )}
+        </label>
       </div>
 
-      <div className="flex flex-wrap gap-2 my-1 mb-2">
-        {labelsName.length !== 0 &&
-          labelsName.map((label) => (
-            <div
-              key={label._id}
-              className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg"
-            >
-              <button type="button">{label.name}</button>
-              {/* <RxCross2
-                onClick={() => handlePopModelLabelName(label)}
-                className="border border-gray-300 text-base rounded-md cursor-pointer"
-              /> */}
-            </div>
-          ))}
+      {/* Three dots */}
+      <div ref={threeDotRef} className="relative">
+        <span className="text-lg cursor-pointer">
+          <HiDotsVertical onClick={() => setFormMenu((pre) => !pre)} className="text-gray-700 dark:text-gray-800" />
+        </span>
       </div>
-      <div className={`${hover ? "visible" : "invisible"}`}>
-        <div className="flex gap-6">
-          <div ref={colorRef} className="relative">
-            <input
-              type="color"
-              onChange={(e) => setColor(e.target.value)}
-              className="absolute bottom-0 left-0 opacity-0"
-              id="color"
-              value={color}
-            />
-            <label htmlFor="color" className="text-xl  ">
-              <IoColorPaletteOutline />
-            </label>
-          </div>
-          <div ref={archiveRef} className="">
-            <input
-              type="checkbox"
-              className="hidden"
-              id="archive"
-              value={archive}
-            />
-            <label
-              onClick={() => setArchive((pre) => !pre)}
-              className="text-xl"
-            >
-              {archive ? <MdArchive /> : <MdOutlineArchive />}
-            </label>
-          </div>
-
-          <div ref={threeDotRef} className="relative">
-            <span className="text-lg">
-              <HiDotsVertical onClick={() => setFormMenu((pre) => !pre)} />
-            </span>
-            {/* {formMenu && (
-                  <div className="absolute bottom-0 left-3 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-32 min-h-40 rounded-md overflow-hidden">
-                    <ul className="flex gap-2 ">
-                      <li
-                        onClick={() => {
-                          setFormMenu((pre) => !pre);
-                          setLabelOptions((pre) => !pre);
-                        }}
-                        className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
-                      >
-                        Delete Label
-                      </li>
-                    </ul>
-                  </div>
-                )} */}
-          </div>
-        </div>
-      </div>
-
-      {/* ///////// popModel start///////////////////////////////////////// */}
-      {popModel && (
-        <section className="bg-[#00000070] min-h-dvh fixed top-0 left-0 w-screen h-dvh z-40 flex justify-center items-center">
-          <main
-            ref={popRef}
-            style={{ backgroundColor: color }}
-            className="w-2xl p-3 md:rounded-lg relative"
-          >
-            <input
-              type="checkbox"
-              onChange={() => setPinned((pre) => !pre)}
-              className="hidden"
-              id="pinned2"
-              value={pinned}
-            />
-            <label htmlFor="pinned2" className="text-xl absolute right-3 top-3">
-              {pinned ? <RiPushpin2Fill /> : <RiPushpin2Line />}
-            </label>
-
-            <div className="max-h-[calc(100dvh-100px)] overflow-y-scroll hide-scrollbar">
-              <textarea
-                ref={titleRef}
-                value={title}
-                onChange={handelTitleFeild}
-                className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none"
-                placeholder="Tital"
-                name=""
-                id=""
-                rows={1}
-              ></textarea>
-
-              <textarea
-                ref={contentRef}
-                value={content}
-                className="w-full p-1 resize-none min-h-min text-lg outline-none"
-                onChange={handelContentFeild}
-                rows={1}
-                type="text"
-                placeholder="Take a note..."
-                name=""
-                id=""
-              ></textarea>
-            </div>
-
-            <div className="">
-              <div className="flex flex-wrap gap-2 my-1 mb-2">
-                {labelsName.length !== 0 &&
-                  labelsName.map((label) => (
-                    <div
-                      key={label._id}
-                      className="inline-flex gap-1 items-center justify-center bg-gray-400 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-200 rounded-lg"
-                    >
-                      <button type="button">{label.name}</button>
-                      <RxCross2
-                        onClick={() => handlePopModelLabelName(label)}
-                        className="border border-gray-300 text-base rounded-md cursor-pointer"
-                      />
-                    </div>
-                  ))}
-              </div>
-              <div className="flex justify-between">
-                <div className="flex gap-6">
-                  <div className="relative">
-                    <input
-                      type="color"
-                      onChange={(e) => setColor(e.target.value)}
-                      className="absolute top-0 right-0 opacity-0"
-                      id="color"
-                      value={color}
-                    />
-                    <label htmlFor="color" className="text-xl">
-                      <IoColorPaletteOutline />
-                    </label>
-                  </div>
-                  <div className="">
-                    <input
-                      type="checkbox"
-                      // onChange={() => setArchive((pre) => !pre)}
-                      className="hidden"
-                      id="archive"
-                      value={archive}
-                    />
-                    <label
-                      onClick={() => setArchive((pre) => !pre)}
-                      className="text-xl"
-                    >
-                      {archive ? <MdArchive /> : <MdOutlineArchive />}
-                    </label>
-                  </div>
-
-                  <div className="relative">
-                    <span className="text-lg">
-                      <HiDotsVertical
-                        onClick={() => setFormMenu((pre) => !pre)}
-                      />
-                    </span>
-                    {formMenu && (
-                      <div className="absolute bottom-0 left-0 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-32 min-h-40 rounded-md overflow-hidden">
-                        <ul className="flex gap-2 ">
-                          <li
-                            onClick={() => {
-                              setFormMenu((pre) => !pre);
-                              setLabelOptions((pre) => !pre);
-                            }}
-                            className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
-                          >
-                            Add Label
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-
-                    {labelOptions && (
-                      <div className="absolute bottom-0 left-0 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-52 min-h-40 rounded-md overflow-hidden">
-                        <ul className="flex flex-col gap-2 ">
-                          <li className="flex gap-2 justify-between items-center text-sm font-semibold py-1.5 ps-3 pe-1.5 transition w-full cursor-default">
-                            <span> Label Note</span>
-                            <RxCross2
-                              onClick={() => {
-                                setFormMenu(false);
-                                setLabelOptions(false);
-                              }}
-                              className="text-2xl cursor-pointer"
-                            />
-                          </li>
-                          <li className="flex text-sm font-semibold py-1 ps-3 transition w-full cursor-pointer">
-                            <input
-                              name="label"
-                              value={labelValue}
-                              onChange={(e) => setLabelValue(e.target.value)}
-                              className="text-gray-900 outline-none"
-                              type="text"
-                              placeholder="Enter label name"
-                            />
-                          </li>
-
-                          <div className="max-h-48 overflow-y-auto">
-                            {labelDatas.map((item) => (
-                              <li key={item._id} className="flex">
-                                <label
-                                  htmlFor={item._id}
-                                  className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
-                                >
-                                  <input
-                                    id={item._id}
-                                    type="checkbox"
-                                    className="checked:rounded-none scale-110"
-                                    checked={labels.includes(item._id)}
-                                    onClick={(e) => e.stopPropagation()}
-                                    onChange={(e) =>
-                                      handleLabelSelect(item, e.target.checked)
-                                    }
-                                  />
-                                  {item.name}
-                                </label>
-                              </li>
-                            ))}
-                          </div>
-                          {labelValue && (
-                            <li
-                              onClick={handleLabelCreateBtn}
-                              className="flex text-sm font-semibold hover:bg-gray-300 py-1.5 ps-3 transition w-full cursor-pointer"
-                            >
-                              <span>+</span>
-                              <span>{labelValue}</span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <button
-                  onClick={handleCloseClick}
-                  className="font-semibold px-4 cursor-pointer"
-                  type="button"
-                >
-                  close
-                </button>
-              </div>
-            </div>
-          </main>
-        </section>
-      )}
     </div>
+  </div>
+
+  {/* Pop-up Modal */}
+  {popModel && (
+    <section className="bg-black/70 min-h-dvh fixed top-0 left-0 w-screen h-dvh z-40 flex justify-center items-center">
+      <main
+        ref={popRef}
+        style={{ backgroundColor: color }}
+        className="w-2xl p-3 md:rounded-lg relative dark:bg-[#10141e] transition-colors"
+      >
+        {/* Pinned checkbox */}
+        <input type="checkbox" onChange={() => setPinned((pre) => !pre)} className="hidden" id="pinned2" value={pinned} />
+        <label htmlFor="pinned2" className="text-xl absolute right-3 top-3 cursor-pointer">
+          {pinned ? <RiPushpin2Fill className="text-gray-700 dark:text-gray-800" /> : <RiPushpin2Line className="text-gray-700 dark:text-gray-800" />}
+        </label>
+
+        <div className="max-h-[calc(100dvh-100px)] overflow-y-scroll hide-scrollbar">
+          <textarea
+            ref={titleRef}
+            value={title}
+            onChange={handelTitleFeild}
+            className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none text-gray-900 dark:text-gray-700"
+            placeholder="Title"
+            rows={1}
+          />
+          <textarea
+            ref={contentRef}
+            value={content}
+            onChange={handelContentFeild}
+            rows={1}
+            placeholder="Take a note..."
+            className="w-full p-1 resize-none min-h-min text-lg outline-none text-gray-900 dark:text-gray-700"
+          />
+        </div>
+
+        {/* Labels & Actions */}
+        <div className="flex flex-wrap gap-2 my-1 mb-2">
+          {labelsName.length !== 0 &&
+            labelsName.map((label) => (
+              <div
+                key={label._id}
+                className="inline-flex gap-1 items-center justify-center bg-gray-300 dark:bg-gray-700 pt-1 pb-1.5 text-xs font-semibold px-2 text-gray-800 dark:text-gray-700 rounded-lg"
+              >
+                <button type="button">{label.name}</button>
+                <RxCross2
+                  onClick={() => handlePopModelLabelName(label)}
+                  className="border border-gray-300 dark:border-gray-600 text-base rounded-md cursor-pointer"
+                />
+              </div>
+            ))}
+        </div>
+
+        {/* Bottom Actions */}
+        <div className="flex justify-between mt-2">
+          <button
+            onClick={handleCloseClick}
+            className="font-semibold px-4 py-1 rounded-full bg-gray-200 dark:bg-[#2a2b2e] hover:bg-gray-300 dark:hover:bg-[#3a3b3f] transition cursor-pointer"
+            type="button"
+          >
+            close
+          </button>
+        </div>
+      </main>
+    </section>
+  )}
+</div>
+
   );
 };

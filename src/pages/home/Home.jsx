@@ -40,21 +40,12 @@ export const Home = () => {
   return (
     <Layout>
       <div className="">
-        {/* Heading */}
-        {/* <h2 className="font-bold text-xl mb-4 capitalize">
-          {currentLabel.name ?? "Label Notes"}
-        </h2> */}
-
         {/* ----- PINNED ----- */}
-        {data.pinned.length !== 0 && (
-          <div className="font-semibold mb-2">PINNED</div>
-        )}
+        {data.pinned.length !== 0 && <div className="font-semibold mb-2 text-gray-700 dark:text-gray-300">PINNED</div>}
 
         <div
           className={`${
-            grid
-              ? "columns-1 max-w-3xl m-auto"
-              : "columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-2 lg:gap-3"
+            grid ? "columns-1 max-w-3xl m-auto" : "columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-2 lg:gap-3"
           }`}
         >
           {data.pinned.map((item) => (
@@ -64,14 +55,12 @@ export const Home = () => {
 
         {/* ----- OTHERS ----- */}
         {data.pinned.length !== 0 && (
-          <div className="font-semibold mt-6 mb-2">OTHERS</div>
+          <div className="font-semibold mt-6 mb-2 text-gray-700 dark:text-gray-300">OTHERS</div>
         )}
 
         <div
           className={`${
-            grid
-              ? "columns-1 max-w-3xl m-auto"
-              : "columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-2 lg:gap-3"
+            grid ? "columns-1 max-w-3xl m-auto" : "columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-2 lg:gap-3"
           }`}
         >
           {data.allData.map((item) => (
