@@ -12,8 +12,10 @@ import { useTodo } from "../context/todo_context/TodoContext.js";
 import { Loading } from "../componests/Loading.jsx";
 import { useLabel } from "../context/label_context/LabelContext.js";
 import { useParams } from "react-router-dom";
+import { useLayout } from "../context/layout_context/LayoutContext.js";
 
-export const Main = ({ children, scrollRef }) => {
+export const Main = ({ children }) => {
+  const { scrollRef } = useLayout();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [pin, setPin] = useState(false);
@@ -158,12 +160,11 @@ export const Main = ({ children, scrollRef }) => {
     return () => document.removeEventListener("mousedown", outSideClick);
   });
 
-
-
-  
-
   return (
-    <div ref={scrollRef} className="px-3 py-2 flex-1 overflow-y-auto bg-white dark:bg-[#0e0e0e] transition-colors overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 dark:scrollbar-thumb-[#2a2b2e] dark:hover:scrollbar-thumb-[#3a3b3f] scrollbar-track-transparent">
+    <div
+      ref={scrollRef}
+      className="px-3 py-2 flex-1 overflow-y-auto bg-white dark:bg-[#0e0e0e] transition-colors hide-scrollbar scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 dark:scrollbar-thumb-[#2a2b2e] dark:hover:scrollbar-thumb-[#3a3b3f] scrollbar-track-transparent"
+    >
       {loading && <Loading title="loading" subtitle="plese wait" />}
 
       <div className="w-full">
@@ -179,7 +180,7 @@ export const Main = ({ children, scrollRef }) => {
               <div className="absolute top-3 right-3 text-gray-700 dark:text-gray-200">
                 <input type="checkbox" onChange={() => setPin((pre) => !pre)} className="hidden" id="pin" value={pin} />
                 <label htmlFor="pin" className="text-2xl cursor-pointer">
-                  <div className="w-8 h-8 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+                  <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
                     {pin ? (
                       <RiPushpin2Fill className="text-gray-700 text-lg" />
                     ) : (
@@ -251,7 +252,7 @@ export const Main = ({ children, scrollRef }) => {
                     <label htmlFor="color" className="cursor-pointer">
                       <div
                         style={{ backgroundColor: color === "#FFFFFF" ? "#e5e7eb" : color }}
-                        className="w-8 h-8 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                        className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
                       >
                         <IoColorPaletteOutline className="text-gray-700 text-xl" />
                       </div>
@@ -268,7 +269,7 @@ export const Main = ({ children, scrollRef }) => {
                       value={archive}
                     />
                     <label htmlFor="archive" className="text-xl cursor-pointer">
-                      <div className="w-8 h-8 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+                      <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
                         {archive ? (
                           <MdArchive className="text-gray-700 text-xl" />
                         ) : (
@@ -282,7 +283,7 @@ export const Main = ({ children, scrollRef }) => {
                   <div className="relative">
                     <div
                       onClick={() => setFormMenu((pre) => !pre)}
-                      className="w-8 h-8 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                      className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
                     >
                       <HiDotsVertical className="text-gray-700 text-lg" />
                     </div>
@@ -386,7 +387,7 @@ export const Main = ({ children, scrollRef }) => {
                 {/* Close */}
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-gray-300 text-sm font-medium cursor-pointer leading-none"
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium cursor-pointer leading-none border border-gray-300 bg-gray-300"
                 >
                   close
                 </button>

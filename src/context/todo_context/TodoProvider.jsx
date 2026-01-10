@@ -47,11 +47,7 @@ export const TodoProvider = ({ children }) => {
       setLoading(true);
       setErrorData(null);
       const response = await todoApi.updateTodo(id, data);
-      setTodo((pre) =>
-        pre.map((item) =>
-          item._id === id ? { ...item, ...response.data.data } : item
-        )
-      );
+      setTodo((pre) => pre.map((item) => (item._id === id ? { ...item, ...response.data.data } : item)));
     } catch (error) {
       setErrorData(error);
     } finally {
@@ -59,12 +55,26 @@ export const TodoProvider = ({ children }) => {
     }
   };
 
-  const deleteTodo = async (id) => {
+  const deleteTodo = async (id, isPermanent = false) => {
     try {
       setLoading(true);
       setErrorData(null);
-      await todoApi.deleteTodo(id);
-      setTodo((prev) => prev.filter((item) => item._id !== id));
+
+      const res = await todoApi.deleteTodo(id, {
+        permanent: isPermanent,
+      });
+
+      if (res.data.type === "SOFT_DELETE") {
+        setTodo((prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, isTrashed: true, deletedAt: res.data.data.deletedAt } : item
+          )
+        );
+      }
+
+      if (res.data.type === "PERMANENT_DELETE") {
+        setTodo((prev) => prev.filter((item) => item._id !== id));
+      }
     } catch (err) {
       setErrorData(err);
     } finally {
@@ -74,9 +84,7 @@ export const TodoProvider = ({ children }) => {
 
   return (
     <>
-      <TodoContext.Provider
-        value={{ todo, fetchTodos, addTodo, updateTodo, deleteTodo }}
-      >
+      <TodoContext.Provider value={{ todo, setTodo, fetchTodos, addTodo, updateTodo, deleteTodo }}>
         {children}
       </TodoContext.Provider>
     </>

@@ -194,7 +194,7 @@ export const TodoCard = ({ item }) => {
           value={pinned}
         />
         <label onClick={handlePin} htmlFor="pinned" className="text-xl">
-          <div className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+          <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
             {pinned ? (
               <RiPushpin2Fill className="text-gray-700 text-lg" />
             ) : (
@@ -225,7 +225,7 @@ export const TodoCard = ({ item }) => {
       </div>
 
       <div className={`${hover ? "visible" : "invisible"}`}>
-        <div className="flex gap-6">
+        <div className="flex gap-2 md:gap-4">
           <div ref={colorRef} className="relative">
             <input
               type="color"
@@ -238,7 +238,7 @@ export const TodoCard = ({ item }) => {
             <label htmlFor="color" className="text-xl">
               <div
                 style={{ backgroundColor: color }}
-                className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
               >
                 <IoColorPaletteOutline className="text-gray-700 text-lg" />
               </div>
@@ -253,7 +253,7 @@ export const TodoCard = ({ item }) => {
               value={archive}
             />
             <label onClick={handleArchive} className="text-xl">
-              <div className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+              <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
                 {archive ? (
                   <MdArchive className="text-gray-700 text-lg" />
                 ) : (
@@ -266,7 +266,7 @@ export const TodoCard = ({ item }) => {
           <div ref={deleteRef} className="relative">
             <div
               onClick={handleDelete}
-              className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+              className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
             >
               <RiDeleteBin6Line className="text-gray-700 text-lg" />
             </div>
@@ -279,7 +279,9 @@ export const TodoCard = ({ item }) => {
           <main
             ref={popRef}
             style={{ backgroundColor: color }}
-            className={`${color == null ? "bg-white dark:bg-[#10141e] text-gray-700 dark:!text-gray-300":""} w-2xl p-3 md:rounded-lg relative border border-gray-300 dark:border-gray-700 dark:bg-[#10141e] dark:text-gray-800 transition-colors`}
+            className={`${
+              color == null ? "bg-white dark:bg-[#10141e] text-gray-700 dark:!text-gray-300" : ""
+            } w-2xl p-3 md:rounded-lg relative border border-gray-300 dark:border-gray-700 dark:bg-[#10141e] dark:text-gray-800 transition-colors`}
           >
             <input
               type="checkbox"
@@ -289,7 +291,7 @@ export const TodoCard = ({ item }) => {
               value={pinned}
             />
             <label htmlFor="pinned2" className="text-xl absolute right-3 top-3">
-              <div className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+              <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
                 {pinned ? (
                   <RiPushpin2Fill className="text-gray-700 text-lg" />
                 ) : (
@@ -348,7 +350,7 @@ export const TodoCard = ({ item }) => {
               </div>
 
               <div className="flex justify-between">
-                <div className="flex gap-6">
+                <div className="flex gap-4 md:gap-6">
                   <div className="relative">
                     <input
                       type="color"
@@ -360,7 +362,7 @@ export const TodoCard = ({ item }) => {
                     <label htmlFor="color" className="text-xl">
                       <div
                         // style={{ backgroundColor: color }}
-                        className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                        className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
                       >
                         <IoColorPaletteOutline className="text-gray-700" />
                       </div>
@@ -375,7 +377,7 @@ export const TodoCard = ({ item }) => {
                       value={archive}
                     />
                     <label onClick={() => setArchive((pre) => !pre)} className="text-xl">
-                      <div className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer">
+                      <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
                         {archive ? (
                           <MdArchive className="text-gray-700 text-lg" />
                         ) : (
@@ -386,15 +388,18 @@ export const TodoCard = ({ item }) => {
                   </div>
                   <div
                     onClick={handleDelete}
-                    className="w-7 h-7 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
                   >
                     <RiDeleteBin6Line className="text-gray-700 text-lg" />
                   </div>
 
                   <div className="relative">
-                    <span className="text-lg">
-                      <HiDotsVertical onClick={() => setFormMenu((pre) => !pre)} />
-                    </span>
+                    <div
+                      onClick={() => setFormMenu((pre) => !pre)}
+                      className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
+                    >
+                      <HiDotsVertical className="text-gray-700 text-lg" />
+                    </div>
                     {formMenu && (
                       <div className="absolute bottom-0 left-0 bg-white shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-32 min-h-40 rounded-md overflow-hidden">
                         <ul className="flex gap-2 ">
@@ -471,7 +476,7 @@ export const TodoCard = ({ item }) => {
                 </div>
                 <button
                   onClick={handleCloseClick}
-                  className="inline-flex items-center justify-center px-4 pt-1.5 pb-2 border border-gray-300 dark:border-gray-700 rounded-full bg-gray-300 text-gray-700 text-sm font-medium cursor-pointer leading-none"
+                  className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium cursor-pointer leading-none border border-gray-300 bg-gray-300"
                 >
                   close
                 </button>

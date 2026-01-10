@@ -12,12 +12,12 @@ import { TfiSearch } from "react-icons/tfi";
 import { AiOutlineSearch } from "react-icons/ai";
 import logo from "../../public/images/logo/white1.png";
 
-export const Navbar = ({ scrollRef, setSide, side }) => {
+export const Navbar = () => {
+  const { grid, setGrid, scrollRef, setSide, side, search, setSearch } = useLayout();
   const [searchBar, setSearchBar] = useState(false);
   const [scroll, setScroll] = useState(false);
   const [userDetails, setUserDetails] = useState(false);
   const { user } = useAuth();
-  const { grid, setGrid } = useLayout();
 
   useEffect(() => {
     let div = scrollRef.current;
@@ -82,6 +82,8 @@ export const Navbar = ({ scrollRef, setSide, side }) => {
             dark:bg-[#141517] hover:shadow rounded-full max-w-2xl  justify-between items-center`}
           >
             <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full flex-1 ps-4 outline-none
                bg-transparent
                text-gray-800 dark:text-gray-200

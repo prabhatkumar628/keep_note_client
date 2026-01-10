@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { Layout } from "../../layout/Layout.jsx";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.js";
 import { Loading } from "../../componests/Loading.jsx";
 import { useTodo } from "../../context/todo_context/TodoContext.js";
@@ -10,8 +10,10 @@ import { useLayout } from "../../context/layout_context/LayoutContext.js";
 export const Home = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { todo } = useTodo();
-  const { grid } = useLayout();
+  const { grid, setSide, search } = useLayout();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -19,13 +21,28 @@ export const Home = () => {
     }
   }, [loading, user, navigate]);
 
+  useEffect(() => {
+    setSide(false);
+  }, [location.pathname, setSide]);
+
   const data = useMemo(() => {
     if (!todo) return { pinned: [], allData: [] };
 
+    const q = search?.trim().toLowerCase();
+
     return todo.reduce(
       (acc, item) => {
-        if (item.isArchived) return acc;
+        // ❌ Archive ya Trash me ho to skip
+        if (item.isArchived || item.isTrashed) return acc;
 
+        // 🔍 SEARCH CHECK
+        if (q) {
+          const isMatch = item.title?.toLowerCase().includes(q) || item.content?.toLowerCase().includes(q);
+
+          if (!isMatch) return acc;
+        }
+
+        // 📌 PINNED / NORMAL
         if (item.isPinned) acc.pinned.push(item);
         else acc.allData.push(item);
 
@@ -33,7 +50,7 @@ export const Home = () => {
       },
       { pinned: [], allData: [] }
     );
-  }, [todo]);
+  }, [todo, search]);
 
   if (!user) return <Loading title="loading" subtitle="please wait" />;
 
