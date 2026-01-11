@@ -47,7 +47,7 @@ export const Trashed = () => {
       <>
         <div className="">
           {/* Heading */}
-          <h2 className="font-bold text-xl mb-4 capitalize">Trashed Notes</h2>
+          <h2 className="font-bold text-xl mb-4 capitalize dark:text-gray-200">Trashed Notes</h2>
           <div
             className={`${
               grid ? "columns-1 max-w-3xl m-auto" : "columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-2 lg:gap-3"

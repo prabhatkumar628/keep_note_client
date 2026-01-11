@@ -70,7 +70,7 @@ export const LabelsPage = () => {
       <>
         <div className="">
           {/* Heading */}
-          <h2 className="font-bold text-xl mb-4 capitalize">{currentLabel.name ?? "Label Notes"}</h2>
+          <h2 className="font-bold text-xl mb-4 capitalize dark:text-gray-200">{currentLabel.name ?? "Label Notes"}</h2>
 
           {/* ----- PINNED ----- */}
           {data.pinned.length !== 0 && <div className="font-semibold mb-2">PINNED</div>}

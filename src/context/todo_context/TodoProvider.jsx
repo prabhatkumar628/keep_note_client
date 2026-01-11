@@ -8,6 +8,8 @@ export const TodoProvider = ({ children }) => {
   const { user, setLoading, setErrorData } = useAuth();
 
   const fetchTodos = useCallback(async () => {
+    if (!user) return;
+
     try {
       setLoading(true);
       setErrorData(null);
@@ -18,7 +20,7 @@ export const TodoProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, [setErrorData, setLoading]);
+  }, [setErrorData, setLoading, user]);
 
   useEffect(() => {
     if (user) {
@@ -60,19 +62,15 @@ export const TodoProvider = ({ children }) => {
       setLoading(true);
       setErrorData(null);
 
-      const res = await todoApi.deleteTodo(id, {
+      const response = await todoApi.deleteTodo(id, {
         permanent: isPermanent,
       });
 
-      if (res.data.type === "SOFT_DELETE") {
-        setTodo((prev) =>
-          prev.map((item) =>
-            item._id === id ? { ...item, isTrashed: true, deletedAt: res.data.data.deletedAt } : item
-          )
-        );
+      if (response.data.type === "SOFT_DELETE") {
+        setTodo((pre) => pre.map((item) => (item._id === id ? { ...item, ...response.data.data } : item)));
       }
 
-      if (res.data.type === "PERMANENT_DELETE") {
+      if (response.data.type === "PERMANENT_DELETE") {
         setTodo((prev) => prev.filter((item) => item._id !== id));
       }
     } catch (err) {

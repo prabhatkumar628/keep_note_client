@@ -5,6 +5,7 @@ import { IoColorPaletteOutline } from "react-icons/io5";
 import { MdOutlineArchive } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import { RxDotsVertical } from "react-icons/rx";
+import { MdNewLabel } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { MdArchive } from "react-icons/md";
 import { useAuth } from "../context/AuthContext.js";
@@ -13,6 +14,7 @@ import { Loading } from "../componests/Loading.jsx";
 import { useLabel } from "../context/label_context/LabelContext.js";
 import { useParams } from "react-router-dom";
 import { useLayout } from "../context/layout_context/LayoutContext.js";
+import { Tooltip } from "../componests/Tooltip.jsx";
 
 export const Main = ({ children }) => {
   const { scrollRef } = useLayout();
@@ -20,8 +22,8 @@ export const Main = ({ children }) => {
   const [content, setContent] = useState("");
   const [pin, setPin] = useState(false);
   const [labels, setLabels] = useState([]);
-  const [archive, setArchive] = useState(false);
   const [color, setColor] = useState(null);
+  const [archive, setArchive] = useState(false);
 
   const [click, setClick] = useState(false);
   const [formMenu, setFormMenu] = useState(false);
@@ -84,10 +86,11 @@ export const Main = ({ children }) => {
 
     setTitle("");
     setContent("");
-    setColor(null);
     setPin(false);
     setLabels([]);
+    setColor(null);
     setArchive(false);
+    setLabelsName([]);
     setClick(false);
   };
 
@@ -108,10 +111,11 @@ export const Main = ({ children }) => {
     // await fetchTodos();
     setTitle("");
     setContent("");
-    setColor("#fff");
     setPin(false);
     setLabels([]);
+    setColor(null);
     setArchive(false);
+    setLabelsName([]);
     setClick(false);
   };
 
@@ -180,13 +184,15 @@ export const Main = ({ children }) => {
               <div className="absolute top-3 right-3 text-gray-700 dark:text-gray-200">
                 <input type="checkbox" onChange={() => setPin((pre) => !pre)} className="hidden" id="pin" value={pin} />
                 <label htmlFor="pin" className="text-2xl cursor-pointer">
-                  <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
-                    {pin ? (
-                      <RiPushpin2Fill className="text-gray-700 text-lg" />
-                    ) : (
-                      <RiPushpin2Line className="text-gray-700 text-lg" />
-                    )}
-                  </div>
+                  <Tooltip element="div" tip={pin ? "Pinned" : "Pin"}>
+                    <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
+                      {pin ? (
+                        <RiPushpin2Fill className="text-gray-700 text-lg" />
+                      ) : (
+                        <RiPushpin2Line className="text-gray-700 text-lg" />
+                      )}
+                    </div>
+                  </Tooltip>
                 </label>
               </div>
 
@@ -250,12 +256,14 @@ export const Main = ({ children }) => {
                     />
 
                     <label htmlFor="color" className="cursor-pointer">
-                      <div
-                        style={{ backgroundColor: color === "#FFFFFF" ? "#e5e7eb" : color }}
-                        className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
-                      >
-                        <IoColorPaletteOutline className="text-gray-700 text-xl" />
-                      </div>
+                      <Tooltip element="div" tip={color ? "Edit color" : "Set color"}>
+                        <div
+                          style={{ backgroundColor: color === "#FFFFFF" ? "#e5e7eb" : color }}
+                          className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
+                        >
+                          <IoColorPaletteOutline className="text-gray-700 text-xl" />
+                        </div>
+                      </Tooltip>
                     </label>
                   </div>
 
@@ -269,24 +277,28 @@ export const Main = ({ children }) => {
                       value={archive}
                     />
                     <label htmlFor="archive" className="text-xl cursor-pointer">
-                      <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
-                        {archive ? (
-                          <MdArchive className="text-gray-700 text-xl" />
-                        ) : (
-                          <MdOutlineArchive className="text-gray-700 text-xl" />
-                        )}
-                      </div>
+                      <Tooltip element="div" tip={archive ? "Archived" : "Archive"}>
+                        <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
+                          {archive ? (
+                            <MdArchive className="text-gray-700 text-xl" />
+                          ) : (
+                            <MdOutlineArchive className="text-gray-700 text-xl" />
+                          )}
+                        </div>
+                      </Tooltip>
                     </label>
                   </div>
 
                   {/* Menu */}
                   <div className="relative">
-                    <div
-                      onClick={() => setFormMenu((pre) => !pre)}
-                      className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
-                    >
-                      <HiDotsVertical className="text-gray-700 text-lg" />
-                    </div>
+                    <Tooltip element="div" tip={labels?.length > 0 ? "Manage labels" : "Add label"}>
+                      <div
+                        onClick={() => setLabelOptions((pre) => !pre)}
+                        className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
+                      >
+                        <MdNewLabel className="text-gray-700 text-lg" />
+                      </div>
+                    </Tooltip>
 
                     {/* Menu */}
                     {formMenu && (
@@ -316,66 +328,104 @@ export const Main = ({ children }) => {
                     {/* Label Options */}
                     {labelOptions && (
                       <div
-                        className="absolute top-full left-0
-                  bg-white dark:bg-[#141517]
-                  text-gray-900 dark:text-gray-200
-                  shadow-[0_3px_8px_rgba(0,0,0,0.24)]
-                  z-10 w-52 rounded-md overflow-hidden"
+                        className="
+      absolute top-full left-0 mt-2
+      z-20 w-56 rounded-lg overflow-hidden
+      border border-gray-300 dark:border-gray-700
+      bg-white dark:bg-[#141517]
+      text-gray-900 dark:text-gray-200
+      shadow-[0_6px_16px_rgba(0,0,0,0.25)]
+      backdrop-blur-sm
+    "
                       >
-                        <ul className="flex flex-col gap-2">
-                          <li className="flex justify-between items-center text-sm font-semibold py-1.5 ps-3 pe-1.5">
-                            <span>Label Note</span>
+                        <ul className="flex flex-col">
+                          {/* Header */}
+                          <li
+                            className="
+          flex justify-between items-center
+          px-3 py-2
+          border-b border-gray-200 dark:border-gray-700
+          text-sm font-semibold
+        "
+                          >
+                            <span>Label note</span>
                             <RxCross2
                               onClick={() => {
                                 setFormMenu(false);
                                 setLabelOptions(false);
                               }}
-                              className="text-2xl cursor-pointer"
+                              className="
+            text-xl cursor-pointer
+            text-gray-600 dark:text-gray-400
+            hover:text-gray-900 dark:hover:text-gray-200
+            transition
+          "
                             />
                           </li>
 
-                          <li className="px-3">
+                          {/* Input */}
+                          <li className="px-3 py-2">
                             <input
                               name="label"
                               value={labelValue}
                               onChange={(e) => setLabelValue(e.target.value)}
-                              className="w-full bg-transparent outline-none
-                          text-gray-900 dark:text-gray-200
-                          placeholder-gray-500"
+                              className="
+            w-full bg-transparent outline-none
+            text-sm
+            text-gray-900 dark:text-gray-200
+            placeholder-gray-500 dark:placeholder-gray-400
+          "
                               type="text"
                               placeholder="Enter label name"
                             />
                           </li>
 
-                          {labelDatas.map((item) => (
-                            <li key={item._id}>
-                              <label
-                                htmlFor={item._id}
-                                className="flex gap-2 items-center text-sm font-semibold
-                            hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
-                            py-1.5 ps-3 transition cursor-pointer"
-                              >
-                                <input
-                                  id={item._id}
-                                  type="checkbox"
-                                  className="scale-110"
-                                  checked={labels.includes(item._id)}
-                                  onChange={(e) => handleLabelSelect(item, e.target.checked)}
-                                />
-                                {item.name}
-                              </label>
-                            </li>
-                          ))}
+                          {/* Label list */}
+                          <div className="max-h-44 overflow-y-auto">
+                            {labelDatas.map((item) => (
+                              <li key={item._id}>
+                                <label
+                                  htmlFor={item._id}
+                                  className="
+                flex items-center gap-2
+                px-3 py-1.5
+                text-sm font-medium
+                cursor-pointer
+                transition-colors
+                hover:bg-gray-200 dark:hover:bg-[#1f1f1f]
+              "
+                                >
+                                  <input
+                                    id={item._id}
+                                    type="checkbox"
+                                    className="
+                  scale-110 accent-gray-700 dark:accent-gray-300
+                "
+                                    checked={labels.includes(item._id)}
+                                    onChange={(e) => handleLabelSelect(item, e.target.checked)}
+                                  />
+                                  <span className="truncate">{item.name}</span>
+                                </label>
+                              </li>
+                            ))}
+                          </div>
 
+                          {/* Create label */}
                           {labelValue && (
                             <li
                               onClick={handleLabelCreateBtn}
-                              className="flex gap-1 text-sm font-semibold
-                          hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
-                          py-1.5 ps-3 transition cursor-pointer"
+                              className="
+            flex items-center gap-2
+            px-3 py-2
+            text-sm font-semibold
+            cursor-pointer
+            border-t border-gray-200 dark:border-gray-700
+            hover:bg-gray-200 dark:hover:bg-[#1f1f1f]
+            transition-colors
+          "
                             >
-                              <span>+</span>
-                              <span>{labelValue}</span>
+                              <span className="text-lg leading-none">+</span>
+                              <span>Create “{labelValue}”</span>
                             </li>
                           )}
                         </ul>
@@ -386,7 +436,7 @@ export const Main = ({ children }) => {
 
                 {/* Close */}
                 <button
-                  type="submit"
+                 type="submit"
                   className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium cursor-pointer leading-none border border-gray-300 bg-gray-300"
                 >
                   close

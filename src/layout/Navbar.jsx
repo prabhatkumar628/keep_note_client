@@ -11,6 +11,7 @@ import { MdOutlineViewDay } from "react-icons/md";
 import { TfiSearch } from "react-icons/tfi";
 import { AiOutlineSearch } from "react-icons/ai";
 import logo from "../../public/images/logo/white1.png";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   const { grid, setGrid, scrollRef, setSide, side, search, setSearch } = useLayout();
@@ -53,23 +54,32 @@ export const Navbar = () => {
       <nav className="flex justify-between items-center relative">
         {/* Left */}
         <div className="flex md:gap-2 items-center px-1">
-          <div
-            onClick={() => setSide((pre) => !pre)}
-            className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
-          >
-            {side ? (
+          {side ? (
+            <div
+              onClick={() => setSide(false)}
+              title="Menu"
+              className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
+            >
               <RxCross2 className="text-3xl text-gray-800 dark:text-gray-200" />
-            ) : (
+            </div>
+          ) : (
+            <div
+              onClick={() => setSide(true)}
+              title="Menu"
+              className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
+            >
               <HiMiniBars3 className="text-3xl text-gray-800 dark:text-gray-200" />
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="flex items-center gap-1 ms-2">
-            <img className="w-[43px]" src={logo} alt="logo" />
-            <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal text-xl sm:text-2xl text-gray-900 dark:text-white cursor-default">
-              Likhooo
-            </p>
-          </div>
+          <Link to={"/"}>
+            <div className="flex items-center gap-1 ms-2">
+              <img className="w-[43px] min-w-[43px]" src={logo} alt="logo" />
+              <p className="font-semibold hidden [@media(min-width:400px)]:inline-block tracking-tight sm:tracking-normal raleway-400 text-xl sm:text-2xl text-gray-900 dark:text-white cursor-pointer">
+                Likhooo
+              </p>
+            </div>
+          </Link>
         </div>
 
         {/* Right */}
@@ -109,6 +119,7 @@ export const Navbar = () => {
 
           <div
             onClick={() => setSearchBar(true)}
+            title="Search"
             className={`${searchBar ? "hidden" : ""}
             md:hidden w-[50px] h-[50px] lg:hidden transition hover:bg-gray-200
             dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer`}
@@ -117,49 +128,46 @@ export const Navbar = () => {
           </div>
 
           {/* Reload */}
-          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center">
-            <TbReload onClick={() => window.location.reload()} className="text-3xl text-gray-800 dark:text-gray-200" />
+          <div
+            title="Reload"
+            onClick={() => window.location.reload()}
+            className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
+          >
+            <TbReload className="text-3xl text-gray-800 dark:text-gray-200" />
           </div>
 
           {/* Grid Toggle */}
-          <div className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center">
+          <div
+            title="Layout"
+            onClick={() => setGrid((pre) => !pre)}
+            className="w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
+          >
             {grid ? (
-              <MdOutlineGridView
-                onClick={() => setGrid((pre) => !pre)}
-                className="text-3xl text-gray-800 dark:text-gray-200"
-              />
+              <MdOutlineGridView className="text-3xl text-gray-800 dark:text-gray-200" />
             ) : (
-              <MdOutlineViewDay
-                onClick={() => setGrid((pre) => !pre)}
-                className="text-3xl text-gray-800 dark:text-gray-200"
-              />
+              <MdOutlineViewDay className="text-3xl text-gray-800 dark:text-gray-200" />
             )}
           </div>
 
           {/* User Avatar */}
           <div
+            title="Profile"
+            onClick={() => {
+              setSide(false);
+              setUserDetails((pre) => !pre);
+            }}
             className="w-[50px] h-[50px] bg-gray-200 dark:bg-[#1a1a1a]
           p-0.5 sm:p-1 transition hover:bg-gray-300 dark:hover:bg-[#242424]
-          rounded-full flex justify-between items-center relative"
+          rounded-full flex justify-between items-center relative cursor-pointer"
           >
             {user?.avatar ? (
               <img
-                onClick={() => {
-                  setSide(false);
-                  setUserDetails((pre) => !pre);
-                }}
-                className="w-full h-full object-cover rounded-full"
+                className="w-full h-full object-cover rounded-full cursor-pointer"
                 src={`${import.meta.env.VITE_API_BASE_URL}${user.avatar.original}`}
                 alt="avatar"
               />
             ) : (
-              <p
-                onClick={() => {
-                  setSide(false);
-                  setUserDetails((pre) => !pre);
-                }}
-                className="text-2xl text-center font-semibold text-gray-800 dark:text-gray-200 w-full"
-              >
+              <p className="text-2xl text-center font-semibold text-gray-800 dark:text-gray-200 w-full cursor-pointer">
                 {user?.username?.slice(0, 1).toUpperCase() ?? "U"}
               </p>
             )}
