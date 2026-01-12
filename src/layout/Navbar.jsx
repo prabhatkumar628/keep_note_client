@@ -151,28 +151,32 @@ export const Navbar = () => {
 
           {/* User Avatar */}
           <div
+            className="w-[50px] h-[50px] cursor-pointer p-1.5"
             title="Profile"
             onClick={() => {
               setSide(false);
               setUserDetails((pre) => !pre);
             }}
-            className="w-[50px] h-[50px] bg-gray-200 dark:bg-[#1a1a1a]
-          p-0.5 sm:p-1 transition hover:bg-gray-300 dark:hover:bg-[#242424]
-          rounded-full flex justify-between items-center relative cursor-pointer"
           >
-            {user?.avatar ? (
-              <img
-                className="w-full h-full object-cover rounded-full cursor-pointer"
-                src={`${import.meta.env.VITE_API_BASE_URL}${user.avatar.original}`}
-                alt="avatar"
-              />
-            ) : (
-              <p className="text-2xl text-center font-semibold text-gray-800 dark:text-gray-200 w-full cursor-pointer">
-                {user?.username?.slice(0, 1).toUpperCase() ?? "U"}
-              </p>
-            )}
+            <div
+              className="w-full h-full bg-gray-200 dark:bg-[#1a1a1a]
+              p-0.5 sm:p-1 transition hover:bg-gray-300 dark:hover:bg-[#242424]
+              rounded-full flex justify-between items-center relative cursor-pointer"
+            >
+              {user?.avatar ? (
+                <img
+                  className="w-full h-full object-cover rounded-full cursor-pointer"
+                  src={`${import.meta.env.VITE_API_BASE_URL}${user.avatar.original}`}
+                  alt="avatar"
+                />
+              ) : (
+                <p className="text-xl text-center font-semibold text-gray-800 dark:text-gray-200 w-full cursor-pointer">
+                  {user?.username?.slice(0, 1).toUpperCase() ?? "U"}
+                </p>
+              )}
 
-            {userDetails && <UserDetails setUserDetails={setUserDetails} />}
+              {userDetails && <UserDetails setUserDetails={setUserDetails} />}
+            </div>
           </div>
         </div>
       </nav>

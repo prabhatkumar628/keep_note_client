@@ -200,7 +200,7 @@ export const Main = ({ children }) => {
                 ref={titleRef}
                 value={title}
                 onChange={handelTitleFeild}
-                placeholder="Tital"
+                placeholder="Title"
                 rows={1}
                 className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
@@ -215,7 +215,7 @@ export const Main = ({ children }) => {
                 onChange={handelContentFeild}
                 rows={1}
                 type="text"
-                placeholder="Take a note..."
+                placeholder="Write a note..."
               />
             </div>
 

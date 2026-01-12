@@ -320,7 +320,7 @@ export const TodoCard = ({ item }) => {
                 value={title}
                 onChange={handelTitleFeild}
                 className="w-full p-1 resize-none min-h-min text-xl font-semibold outline-none"
-                placeholder="Tital"
+                placeholder="Title"
                 name=""
                 id=""
                 rows={1}
@@ -333,7 +333,7 @@ export const TodoCard = ({ item }) => {
                 onChange={handelContentFeild}
                 rows={1}
                 type="text"
-                placeholder="Take a note..."
+                placeholder="Write a note..."
                 name=""
                 id=""
               ></textarea>
