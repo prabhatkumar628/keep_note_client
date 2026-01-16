@@ -361,7 +361,10 @@ export const Main = ({ children }) => {
                 {/* Close */}
                 <button
                   type="button"
-                  onClick={handleOutSideSubmit}
+                  onClick={(e) => {
+                    e.stopPropagation(); // 🔥 MOST IMPORTANT
+                    handleOutSideSubmit();
+                  }}
                   className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium cursor-pointer leading-none border border-gray-300 bg-gray-300"
                 >
                   close
