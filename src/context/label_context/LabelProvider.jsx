@@ -35,6 +35,7 @@ export const LabelProvider = ({ children }) => {
       setErrorData(null);
       const response = await labelApi.createLabel(data);
       setLabelDatas((pre) => [response.data.data, ...pre]);
+      return response.data.data;
     } catch (error) {
       setErrorData(error);
     } finally {
