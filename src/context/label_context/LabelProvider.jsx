@@ -31,7 +31,7 @@ export const LabelProvider = ({ children }) => {
 
   const createLabel = async (data) => {
     try {
-      //   setLoading(true);
+      setLoading(true);
       setErrorData(null);
       const response = await labelApi.createLabel(data);
       setLabelDatas((pre) => [response.data.data, ...pre]);
@@ -39,30 +39,26 @@ export const LabelProvider = ({ children }) => {
     } catch (error) {
       setErrorData(error);
     } finally {
-      //   setLoading(false);
+      setLoading(false);
     }
   };
 
   const updateLabel = async (id, data) => {
     try {
-      //   setLoading(true);
+        setLoading(true);
       setErrorData(null);
       const response = await labelApi.updateLabel(id, data);
-      setLabelDatas((pre) =>
-        pre.map((item) =>
-          item._id === id ? { ...item, ...response.data.data } : item
-        )
-      );
+      setLabelDatas((pre) => pre.map((item) => (item._id === id ? { ...item, ...response.data.data } : item)));
     } catch (error) {
       setErrorData(error);
     } finally {
-      //   setLoading(false);
+        setLoading(false);
     }
   };
 
   const bulkUpdateLabel = async (data) => {
     try {
-      //   setLoading(true);
+        setLoading(true);
       setErrorData(null);
       await labelApi.bulkUpdateLabel(data);
       const response = await labelApi.getLabel();
@@ -70,20 +66,20 @@ export const LabelProvider = ({ children }) => {
     } catch (error) {
       setErrorData(error);
     } finally {
-      //   setLoading(false);
+        setLoading(false);
     }
   };
 
   const deleteLabel = async (id) => {
     try {
-      //   setLoading(true);
+        setLoading(true);
       setErrorData(null);
       await labelApi.deleteLabel(id);
       setLabelDatas((pre) => pre.filter((item) => item._id !== id));
     } catch (error) {
       setErrorData(error);
     } finally {
-      //   setLoading(false);
+        setLoading(false);
     }
   };
 
