@@ -31,6 +31,8 @@ export const TodoCard = ({ item }) => {
   const popRef = useRef();
   const titleRef = useRef();
   const contentRef = useRef();
+  const color1Ref = useRef();
+  const color2Ref = useRef();
 
   const [popModel, setPopModel] = useState(false);
 
@@ -96,7 +98,7 @@ export const TodoCard = ({ item }) => {
   };
 
   const updateAllData = async () => {
-    console.log(item);
+    // console.log(item);
     // title, content, isPinned, labels, color, reminder, isArchived
     const itemLabelIds = item.labels.map((l) => l._id);
 
@@ -230,21 +232,20 @@ export const TodoCard = ({ item }) => {
           <div ref={colorRef} className="relative">
             <input
               type="color"
+              ref={color1Ref}
               onChange={(e) => setColor(e.target.value)}
               onBlur={handleColor}
               className="absolute bottom-0 right-0 opacity-0 cursor-pointer"
               id="color"
               value={color}
             />
-            <label htmlFor="color" className="text-xl">
-              <Tooltip element="div" tip={color ? "Edit color" : "Set color"}>
-                <div
-                  style={{ backgroundColor: color }}
-                  className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
-                >
-                  <IoColorPaletteOutline className="text-gray-700 text-lg" />
-                </div>
-              </Tooltip>
+            <label htmlFor="color">
+              <div
+                style={{ backgroundColor: color }}
+                className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
+              >
+                <IoColorPaletteOutline className="text-gray-700 text-lg" />
+              </div>
             </label>
           </div>
           <div ref={archiveRef} className="">
@@ -363,18 +364,23 @@ export const TodoCard = ({ item }) => {
                   <div className="relative">
                     <input
                       type="color"
+                      ref={color2Ref}
                       onChange={(e) => setColor(e.target.value)}
                       className="absolute top-0 right-0 opacity-0 cursor-pointer"
                       id="color"
                       value={color}
                     />
-                    <label htmlFor="color" className="text-xl">
-                      <Tooltip element="div" tip={color ? "Edit color" : "Set color"}>
-                        <div className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer">
-                          <IoColorPaletteOutline className="text-gray-700" />
-                        </div>
-                      </Tooltip>
-                    </label>
+                    <Tooltip element="div" tip={color ? "Edit color" : "Set color"}>
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation(); // 🔥 IMPORTANT
+                          color2Ref.current?.click(); // manually open picker
+                        }}
+                        className="w-8 h-8 border border-gray-300 bg-gray-300 rounded-full flex items-center justify-center cursor-pointer"
+                      >
+                        <IoColorPaletteOutline className="text-gray-700" />
+                      </div>
+                    </Tooltip>
                   </div>
                   <div className="">
                     <input
