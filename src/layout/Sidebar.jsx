@@ -41,8 +41,11 @@ export const Sidebar = ({ chid }) => {
   return (
     <div className="flex w-full mt-[67px] h-[calc(100svh-67px)] relative">
       <div
-        className={`${side ? "w-full" : "w-fit"}
-      h-[calc(100dvh-67px)] absolute md:static md:w-fit top-0 left-0 z-10 md:z-0 bg-black/70`}
+        className={`
+          ${side ? "w-full bg-black/70" : "w-fit bg-transparent"}
+          h-[calc(100dvh-67px)] absolute md:static md:w-fit
+          top-0 left-0 z-10 md:z-0 transition-[background-color,width] duration-500 ease-in-out
+          `}
       >
         <div
           ref={sidebarRef}

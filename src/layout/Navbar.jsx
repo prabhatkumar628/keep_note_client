@@ -54,23 +54,13 @@ export const Navbar = () => {
       <nav className="flex justify-between items-center relative">
         {/* Left */}
         <div className="flex md:gap-2 items-center px-1">
-          {side ? (
-            <div
-              onClick={() => setSide(false)}
-              title="Menu"
-              className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
-            >
-              <RxCross2 className="text-3xl text-gray-800 dark:text-gray-200" />
-            </div>
-          ) : (
-            <div
-              onClick={() => setSide(true)}
-              title="Menu"
-              className="w-[50px] min-w-[50px] h-[50px] transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] rounded-full grid place-items-center cursor-pointer"
-            >
-              <HiMiniBars3 className="text-3xl text-gray-800 dark:text-gray-200" />
-            </div>
-          )}
+          <div onClick={() => setSide((prev) => !prev)} title={side ? "Close Menu" : "Open Menu"} className="w-[50px] min-w-[50px] h-[50px] flex justify-center items-center rounded-full text-gray-800 dark:text-gray-200 transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] cursor-pointer">
+            {side ? (
+              <RxCross2 className=" p-2.5 w-[50px] min-w-[50px] h-[50px] flex justify-center items-center rounded-full text-gray-800 dark:text-gray-200 transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] cursor-pointer" />
+            ) : (
+              <HiMiniBars3 className=" p-2.5 w-[50px] min-w-[50px] h-[50px] flex justify-center items-center rounded-full text-gray-800 dark:text-gray-200 transition hover:bg-gray-200 dark:hover:bg-[#1a1a1a] cursor-pointer" />
+            )}
+          </div>
 
           <Link to={"/"}>
             <div className="flex items-center gap-1 ms-2">

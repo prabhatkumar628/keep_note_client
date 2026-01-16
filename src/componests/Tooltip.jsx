@@ -24,7 +24,7 @@ export const Tooltip = ({
   return React.createElement(
     element,
     {
-      className: `relative group inline-flex ${className}`,
+      className: `relative group/tooltip inline-flex ${className}`,
     },
     <>
       {children}
@@ -37,8 +37,8 @@ export const Tooltip = ({
             bg-gray-800 text-gray-100
             dark:bg-[#1a1a1a] dark:text-gray-200
             border border-gray-300 dark:border-gray-700
-            opacity-0 group-hover:opacity-100
-            scale-95 group-hover:scale-100
+            opacity-0 group-hover/tooltip:opacity-100
+            scale-95 group-hover/tooltip:scale-100
             transition-all duration-200
             pointer-events-none
             ${positionClasses[position]}

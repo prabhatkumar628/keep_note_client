@@ -15,7 +15,6 @@ import { useLocation } from "react-router-dom";
 
 export const TodoCard = ({ item }) => {
   const location = useLocation();
-  const [hover, setHover] = useState(false);
   const [title, setTitle] = useState(item.title);
   const [content, setContent] = useState(item.content);
   const [pinned, setPinned] = useState(item.isPinned);
@@ -131,7 +130,6 @@ export const TodoCard = ({ item }) => {
     setPopModel(false);
     setFormMenu(false);
     setLabelOptions(false);
-    setHover(false);
   };
 
   useEffect(() => {
@@ -143,7 +141,6 @@ export const TodoCard = ({ item }) => {
         }
         setFormMenu(false);
         setLabelOptions(false);
-        setHover(false);
       }
     };
     document.addEventListener("mousedown", outSideClick);
@@ -183,13 +180,11 @@ export const TodoCard = ({ item }) => {
   return (
     <div
       onClick={handlePopModelOpen}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
       key={item._id}
       style={{ backgroundColor: color }}
-      className="relative break-inside-avoid rounded-lg border border-gray-300 dark:border-gray-700 dark:!bg-[#10141e] dark:text-gray-300 p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]"
+      className="relative group break-inside-avoid rounded-lg border border-gray-300 dark:border-gray-700 dark:!bg-[#10141e] dark:text-gray-300 p-3 mb-2 lg:mb-3 transition hover:shadow-[0_3px_8px_rgba(0,0,0,0.24)]"
     >
-      <div ref={pinnedRef} className={`absolute top-3 right-3 ${hover ? "visible" : "invisible"}`}>
+      <div ref={pinnedRef} className={`absolute top-3 right-3 invisible group-hover:visible`}>
         <input
           type="checkbox"
           onChange={() => setPinned((pre) => !pre)}
@@ -230,7 +225,7 @@ export const TodoCard = ({ item }) => {
           ))}
       </div>
 
-      <div className={`${hover ? "visible" : "invisible"}`}>
+      <div className={`invisible group-hover:visible`}>
         <div className="flex gap-2 md:gap-4">
           <div ref={colorRef} className="relative">
             <input

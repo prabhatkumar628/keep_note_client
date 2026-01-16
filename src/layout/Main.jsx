@@ -189,17 +189,15 @@ export const Main = ({ children }) => {
             </div>
 
             {/* Content */}
-            <div>
-              <textarea
-                ref={contentRef}
-                value={content}
-                className="w-full p-1 resize-none min-h-min text-lg outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
-                onChange={handelContentFeild}
-                rows={1}
-                type="text"
-                placeholder="Write a note..."
-              />
-            </div>
+            <textarea
+              ref={contentRef}
+              value={content}
+              className="w-full p-1 resize-none min-h-min text-lg outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              onChange={handelContentFeild}
+              rows={1}
+              type="text"
+              placeholder="Write a note..."
+            />
 
             {/* Bottom Controls */}
             <div className={click ? "block" : "hidden"}>
