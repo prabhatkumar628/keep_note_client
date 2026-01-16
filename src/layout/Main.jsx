@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { RiPushpin2Line } from "react-icons/ri";
 import { RiPushpin2Fill } from "react-icons/ri";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { MdOutlineArchive } from "react-icons/md";
-import { HiDotsVertical } from "react-icons/hi";
-import { RxDotsVertical } from "react-icons/rx";
 import { MdNewLabel } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { MdArchive } from "react-icons/md";
@@ -66,9 +64,7 @@ export const Main = ({ children }) => {
     }
   }, [labelId, labelDatas]);
 
-  const handalFormSubmit = async (e) => {
-    e.preventDefault();
-    // title, content, isPinned, labels, color, reminder, isArchived
+  const handleOutSideSubmit = useCallback(async () => {
     if (!title && !content) {
       setClick(false);
       return;
@@ -81,8 +77,6 @@ export const Main = ({ children }) => {
       labels,
       isArchived: archive,
     });
-    // await getLabels();
-    // await fetchTodos();
 
     setTitle("");
     setContent("");
@@ -92,43 +86,44 @@ export const Main = ({ children }) => {
     setArchive(false);
     setLabelsName([]);
     setClick(false);
-  };
 
-  const handleOutSideSubmit = async () => {
-    if (!title && !content) {
-      setClick(false);
-      return;
+    if (titleRef.current) {
+      titleRef.current.style.height = "auto";
     }
-    await addTodo({
-      title,
-      content,
-      color,
-      isPinned: pin,
-      labels,
-      isArchived: archive,
-    });
-    // await getLabels();
-    // await fetchTodos();
-    setTitle("");
-    setContent("");
-    setPin(false);
-    setLabels([]);
-    setColor(null);
-    setArchive(false);
-    setLabelsName([]);
-    setClick(false);
-  };
+    if (contentRef.current) {
+      contentRef.current.style.height = "auto";
+    }
+  }, [title, content, color, pin, labels, archive, addTodo]);
+
+  useEffect(() => {
+    const outSideClick = (e) => {
+      if (inputFildBox.current && !inputFildBox.current.contains(e.target)) {
+        if (title.trim() !== "" || content.trim() !== "") {
+          handleOutSideSubmit();
+        } else {
+          setClick(false);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", outSideClick);
+    return () => document.removeEventListener("mousedown", outSideClick);
+  }, [handleOutSideSubmit, title, content]);
 
   const handelContentFeild = (e) => {
     setContent(e.target.value);
-    contentRef.current.style.height = "max-content";
-    contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
+    if (contentRef.current) {
+      contentRef.current.style.height = "auto";
+      contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
+    }
   };
 
   const handelTitleFeild = (e) => {
     setTitle(e.target.value);
-    titleRef.current.style.height = "max-content";
-    titleRef.current.style.height = `${titleRef.current.scrollHeight}px`;
+    if (titleRef.current) {
+      titleRef.current.style.height = "auto";
+      titleRef.current.style.height = `${titleRef.current.scrollHeight}px`;
+    }
   };
 
   const handleLabelSelect = (item, checked) => {
@@ -140,6 +135,7 @@ export const Main = ({ children }) => {
       setLabelsName((prev) => prev.filter((data) => data._id !== item._id));
     }
   };
+
   const handleRemoveSelectedLabel = (item) => {
     setLabels((pre) => pre.filter((id) => id !== item._id));
     setLabelsName((pre) => pre.filter((data) => data._id !== item._id));
@@ -150,20 +146,6 @@ export const Main = ({ children }) => {
     setLabelValue("");
   };
 
-  useEffect(() => {
-    const outSideClick = (e) => {
-      contentRef.current.style.height = "max-content";
-      if (inputFildBox.current && !inputFildBox.current.contains(e.target)) {
-        setClick(false);
-        if (title.trim() !== "" || content.trim() !== "") {
-          handleOutSideSubmit();
-        }
-      }
-    };
-    document.addEventListener("mousedown", outSideClick);
-    return () => document.removeEventListener("mousedown", outSideClick);
-  });
-
   return (
     <div
       ref={scrollRef}
@@ -172,7 +154,7 @@ export const Main = ({ children }) => {
       {loading && <Loading title="loading" subtitle="plese wait" />}
 
       <div className="w-full">
-        <form onSubmit={handalFormSubmit}>
+        <form>
           <div
             ref={inputFildBox}
             onClick={() => setClick(true)}
@@ -227,16 +209,12 @@ export const Main = ({ children }) => {
                   labelsName.map((label, index) => (
                     <div
                       key={index}
-                      className="inline-flex gap-1 items-center justify-center
-                  bg-gray-300 dark:bg-[#2a2a2a]
-                  text-xs font-semibold px-2 py-1.5
-                  text-gray-800 dark:text-gray-200 rounded-lg"
+                      className="inline-flex gap-1 items-center justify-center bg-gray-300 dark:bg-[#2a2a2a] text-xs font-semibold px-2 py-1.5 text-gray-800 dark:text-gray-200 rounded-lg"
                     >
                       <button type="button">{label.name}</button>
                       <RxCross2
                         onClick={() => handleRemoveSelectedLabel(label)}
-                        className="border border-gray-400 dark:border-gray-600
-                    text-base rounded-md cursor-pointer"
+                        className="border border-gray-400 dark:border-gray-600 text-base rounded-md cursor-pointer"
                       />
                     </div>
                   ))}
@@ -302,22 +280,14 @@ export const Main = ({ children }) => {
 
                     {/* Menu */}
                     {formMenu && (
-                      <div
-                        className="absolute top-full left-0
-                  bg-white dark:bg-[#141517]
-                  text-gray-900 dark:text-gray-200
-                  shadow-[0_3px_8px_rgba(0,0,0,0.24)]
-                  z-10 w-32 rounded-md overflow-hidden"
-                      >
+                      <div className="absolute top-full left-0 bg-white dark:bg-[#141517] text-gray-900 dark:text-gray-200 shadow-[0_3px_8px_rgba(0,0,0,0.24)] z-10 w-32 rounded-md overflow-hidden">
                         <ul>
                           <li
                             onClick={() => {
                               setFormMenu((pre) => !pre);
                               setLabelOptions((pre) => !pre);
                             }}
-                            className="text-sm font-semibold
-                        hover:bg-gray-300 dark:hover:bg-[#1f1f1f]
-                        py-1.5 ps-3 transition cursor-pointer"
+                            className="text-sm font-semibold hover:bg-gray-300 dark:hover:bg-[#1f1f1f] py-1.5 ps-3 transition cursor-pointer"
                           >
                             Add Label
                           </li>
@@ -327,39 +297,17 @@ export const Main = ({ children }) => {
 
                     {/* Label Options */}
                     {labelOptions && (
-                      <div
-                        className="
-      absolute top-full left-0 mt-2
-      z-20 w-56 rounded-lg overflow-hidden
-      border border-gray-300 dark:border-gray-700
-      bg-white dark:bg-[#141517]
-      text-gray-900 dark:text-gray-200
-      shadow-[0_6px_16px_rgba(0,0,0,0.25)]
-      backdrop-blur-sm
-    "
-                      >
+                      <div className=" absolute top-full left-0 mt-2 z-20 w-56 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#141517] text-gray-900 dark:text-gray-200 shadow-[0_6px_16px_rgba(0,0,0,0.25)] backdrop-blur-sm">
                         <ul className="flex flex-col">
                           {/* Header */}
-                          <li
-                            className="
-          flex justify-between items-center
-          px-3 py-2
-          border-b border-gray-200 dark:border-gray-700
-          text-sm font-semibold
-        "
-                          >
+                          <li className="flex justify-between items-center px-3 py-2 border-b border-gray-200 dark:border-gray-700 text-sm font-semibold">
                             <span>Label note</span>
                             <RxCross2
                               onClick={() => {
                                 setFormMenu(false);
                                 setLabelOptions(false);
                               }}
-                              className="
-            text-xl cursor-pointer
-            text-gray-600 dark:text-gray-400
-            hover:text-gray-900 dark:hover:text-gray-200
-            transition
-          "
+                              className="text-xl cursor-pointer text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition"
                             />
                           </li>
 
@@ -369,12 +317,7 @@ export const Main = ({ children }) => {
                               name="label"
                               value={labelValue}
                               onChange={(e) => setLabelValue(e.target.value)}
-                              className="
-            w-full bg-transparent outline-none
-            text-sm
-            text-gray-900 dark:text-gray-200
-            placeholder-gray-500 dark:placeholder-gray-400
-          "
+                              className="w-full bg-transparent outline-none text-sm text-gray-900 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400"
                               type="text"
                               placeholder="Enter label name"
                             />
@@ -386,21 +329,12 @@ export const Main = ({ children }) => {
                               <li key={item._id}>
                                 <label
                                   htmlFor={item._id}
-                                  className="
-                flex items-center gap-2
-                px-3 py-1.5
-                text-sm font-medium
-                cursor-pointer
-                transition-colors
-                hover:bg-gray-200 dark:hover:bg-[#1f1f1f]
-              "
+                                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium cursor-pointer transition-colors hover:bg-gray-200 dark:hover:bg-[#1f1f1f]"
                                 >
                                   <input
                                     id={item._id}
                                     type="checkbox"
-                                    className="
-                  scale-110 accent-gray-700 dark:accent-gray-300
-                "
+                                    className="scale-110 accent-gray-700 dark:accent-gray-300"
                                     checked={labels.includes(item._id)}
                                     onChange={(e) => handleLabelSelect(item, e.target.checked)}
                                   />
@@ -414,15 +348,7 @@ export const Main = ({ children }) => {
                           {labelValue && (
                             <li
                               onClick={handleLabelCreateBtn}
-                              className="
-            flex items-center gap-2
-            px-3 py-2
-            text-sm font-semibold
-            cursor-pointer
-            border-t border-gray-200 dark:border-gray-700
-            hover:bg-gray-200 dark:hover:bg-[#1f1f1f]
-            transition-colors
-          "
+                              className="flex items-center gap-2 px-3 py-2 text-sm font-semibold cursor-pointer border-t border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#1f1f1f] transition-colors"
                             >
                               <span className="text-lg leading-none">+</span>
                               <span>Create “{labelValue}”</span>
@@ -436,7 +362,8 @@ export const Main = ({ children }) => {
 
                 {/* Close */}
                 <button
-                 type="submit"
+                  type="button"
+                  onClick={handleOutSideSubmit}
                   className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium cursor-pointer leading-none border border-gray-300 bg-gray-300"
                 >
                   close
@@ -446,7 +373,6 @@ export const Main = ({ children }) => {
           </div>
         </form>
       </div>
-
       <div>{children}</div>
     </div>
   );
